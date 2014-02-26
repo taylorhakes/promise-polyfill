@@ -53,12 +53,8 @@
 			if (newValue === self) throw new TypeError('A promise cannot be resolved with itself.');
 			if (newValue && (typeof newValue === 'object' || typeof newValue === 'function')) {
 				if (typeof newValue.then === 'function') {
-					doResolve(function() {
-						newValue.then(function(value) {
-							resolve.call(self, value);
-						}, function(reason) {
-							reject.call(self, reason);
-						});
+					doResolve(function(resolve, reject) {
+						newValue.then(resolve, reject);
 					}, function(data) {
 						resolve.call(self, data);
 					}, function(reason) {
