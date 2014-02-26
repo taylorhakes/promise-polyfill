@@ -52,10 +52,13 @@
 		try { //Promise Resolution Procedure: https://github.com/promises-aplus/promises-spec#the-promise-resolution-procedure
 			if (newValue === self) throw new TypeError('A promise cannot be resolved with itself.');
 			if (newValue && (typeof newValue === 'object' || typeof newValue === 'function')) {
-				var then = newValue.then;
-				if (typeof then === 'function') {
+				if (typeof newValue.then === 'function') {
 					doResolve(function() {
-						then.call(newValue)
+						newValue.then(function(value) {
+							resolve.call(self, value);
+						}, function(reason) {
+							reject.call(self, reason);
+						});
 					}, function(data) {
 						resolve.call(self, data);
 					}, function(reason) {
@@ -69,7 +72,7 @@
 			finale.call(this);
 		} catch (e) { reject(e) }
 	}
-
+	
 	function reject(newValue) {
 		this._state = false;
 		this._value = newValue;
