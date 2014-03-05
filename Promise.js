@@ -163,6 +163,6 @@
 	if(typeof module !== 'undefined' && module.exports) {
 		module.exports = Promise;
 	} else {
-		global.PromiseL = Promise;
+		global.Promise = Promise;
 	}
-})(typeof window !== 'undefined' ? window : {});
+})(this);
