@@ -1,10 +1,3 @@
-/**
- * Created with JetBrains PhpStorm.
- * User: taylorhakes
- * Date: 3/4/14
- * Time: 11:15 PM
- * To change this template use File | Settings | File Templates.
- */
 var Promise = require('../Promise');
 module.exports = {
 	resolved: Promise.resolve,
