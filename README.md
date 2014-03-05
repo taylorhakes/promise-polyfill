@@ -15,7 +15,12 @@ It is extremely light weight. ***< 1kb Gzipped***
 - [Promise](https://raw.github.com/taylorhakes/promise-polyfill/master/Promise.js)
 - [Promise-min](https://raw.github.com/taylorhakes/promise-polyfill/master/Promise.min.js)
 
-### Simple use
+### Node
+```
+npm install promise-polyfill
+```
+
+## Simple use
 ```
 var prom = new Promise(function(resolve, reject) {
   setTimeout(resolve, 1000);
