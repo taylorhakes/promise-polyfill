@@ -8,7 +8,7 @@ This implementation is based on [then/promise](https://github.com/then/promise).
 
 For API information about Promises, please check out this article [HTML5Rocks article](http://www.html5rocks.com/en/tutorials/es6/promises/).
 
-It is extremely light weight. < 1kb Gzipped
+It is extremely light weight. ***< 1kb Gzipped***
 
 ## Downloads
 
