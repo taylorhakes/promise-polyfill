@@ -23,10 +23,17 @@ npm install promise-polyfill
 ## Simple use
 ```
 var prom = new Promise(function(resolve, reject) {
-  setTimeout(resolve, 1000);
+  // do a thing, possibly async, then…
+
+  if (/* everything turned out fine */) {
+    resolve("Stuff worked!");
+  }
+  else {
+    reject(new Error("It broke"));
+  }
 });
 
-// Do something after 1000 milliseconds
+// Do something when async done
 prom.then(function() {
   ...
 });
