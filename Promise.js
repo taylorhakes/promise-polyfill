@@ -1,4 +1,12 @@
 (function(global) {
+	if(global.Promise) return;
+	
+	if(typeof module !== 'undefined' && module.exports) {
+		module.exports = Promise;
+	} else {
+		global.Promise = Promise;
+	}
+	
 	var asap = (global && global.setImmediate) || function(fn){ setTimeout(fn, 0) };
 	function bind(fn, thisArg) {
 		return function() {
@@ -160,9 +168,5 @@
 		});
 	};
 
-	if(typeof module !== 'undefined' && module.exports) {
-		module.exports = Promise;
-	} else {
-		global.Promise = Promise;
-	}
+	
 })(this);
