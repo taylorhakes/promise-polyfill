@@ -13,6 +13,9 @@
 			fn.apply(thisArg, arguments);
 		}
 	}
+	function isArray(value) {
+		return Array.isArray ? Array.isArray(value) : Object.prototype.toString.call(value) === "[object Array]"
+	}
 	function Promise(fn) {
 		if (typeof this !== 'object') throw new TypeError('Promises must be constructed via new')
 		if (typeof fn !== 'function') throw new TypeError('not a function')
@@ -120,7 +123,7 @@
 	};
 
 	Promise.all = function () {
-		var args = Array.prototype.slice.call(arguments.length === 1 && Array.isArray(arguments[0]) ? arguments[0] : arguments);
+		var args = Array.prototype.slice.call(arguments.length === 1 && isArray(arguments[0]) ? arguments[0] : arguments);
 
 		return new Promise(function (resolve, reject) {
 			if (args.length === 0) return resolve([]);
