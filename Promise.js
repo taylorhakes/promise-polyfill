@@ -1,21 +1,21 @@
 (function(global) {
-	if(global.Promise) return;
-	
 	if(typeof module !== 'undefined' && module.exports) {
-		module.exports = Promise;
-	} else {
+		module.exports = global.Promise ? global.Promise : Promise;
+	} else if (!global.Promise) {
 		global.Promise = Promise;
 	}
-	
-	var asap = (global && global.setImmediate) || function(fn){ setTimeout(fn, 0) };
+
+	var asap = global.setImmediate || function(fn){ setTimeout(fn, 0) };
 	function bind(fn, thisArg) {
 		return function() {
 			fn.apply(thisArg, arguments);
 		}
 	}
+
 	function isArray(value) {
 		return Array.isArray ? Array.isArray(value) : Object.prototype.toString.call(value) === "[object Array]"
 	}
+
 	function Promise(fn) {
 		if (typeof this !== 'object') throw new TypeError('Promises must be constructed via new')
 		if (typeof fn !== 'function') throw new TypeError('not a function')
@@ -77,7 +77,6 @@
 			handle.call(this, this._deferreds[i])
 		this._deferreds = null
 	}
-
 
 	function Handler(onFulfilled, onRejected, resolve, reject){
 		this.onFulfilled = typeof onFulfilled === 'function' ? onFulfilled : null
@@ -170,6 +169,4 @@
 			})
 		});
 	};
-
-	
 })(this);
