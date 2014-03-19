@@ -164,9 +164,9 @@
 
 	Promise.race = function (values) {
 		return new Promise(function (resolve, reject) {
-			values.map(function(value){
-				value.then(resolve, reject);
-			})
+			for(var i = 0, len = values.length; i < len; i++) {
+				values[i].then(resolve, reject);
+			}
 		});
 	};
 })(this);
