@@ -1,4 +1,4 @@
-Promise [![Build Status](https://travis-ci.org/taylorhakes/promise-polyfill.png?branch=master)](https://travis-ci.org/taylorhakes/promise-polyfill)
+Promise [![Build Status](https://travis-ci.org/taylorhakes/promise-polyfill.png?branch=master)](https://travis-ci.org/taylorhakes/promise-polyfill) ![https://david-dm.org/taylorhakes/promise-polyfill/dev-status.png](https://david-dm.org/taylorhakes/promise-polyfill/dev-status.png)
 =============
 
 Lightweight promise polyfill for the browser and node. A+ Compliant. It is a perfect polyfill IE, Firefox or any other browser that does not support native promises.
