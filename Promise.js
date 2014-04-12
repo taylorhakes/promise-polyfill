@@ -5,7 +5,42 @@
 		global.Promise = Promise;
 	}
 
-	var asap = global.setImmediate || function(fn){ setTimeout(fn, 0) };
+	var asap = (function() {
+		var callbacks, timeout, hiddenDiv;
+		if(global.process && process.nextTick === 'function') {
+			return process.nextTick;
+		} else if(global.MutationObserver) {
+			callbacks = [];
+			hiddenDiv = document.createElement("div");
+			(new MutationObserver(executeCallbacks)).observe(hiddenDiv, { attributes: true });
+			return function (callback) {
+				if( !callbacks.length) {
+					hiddenDiv.setAttribute('yes', 'no');
+				}
+				callbacks.push(callback);
+			};
+		} else if(global.setImmediate) {
+			return global.setImmediate;
+		} else {
+			callbacks = [];
+			return function (callback){
+				callbacks.push(callback);
+				if(!timeout) {
+					timeout = setTimeout(executeCallbacks, 0);
+				}
+			};
+		}
+
+		function executeCallbacks() {
+			var cbList = callbacks;
+			timeout = void 0;
+			callbacks = [];
+			for(var i = 0, len = cbList.length; i < len; i++) {
+				cbList[i]();
+			}
+		}
+	})();
+
 	function bind(fn, thisArg) {
 		return function() {
 			fn.apply(thisArg, arguments);
