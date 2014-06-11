@@ -153,6 +153,10 @@
 	};
 
 	Promise.resolve = function (value) {
+		if (value && typeof value === 'object' && value.constructor === Promise) {
+			return value;
+		}
+
 		return new Promise(function (resolve) {
 			resolve(value);
 		});
