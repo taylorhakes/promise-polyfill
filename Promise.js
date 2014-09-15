@@ -1,12 +1,20 @@
-(function(global) {
-	if(typeof module !== 'undefined' && module.exports) {
-		module.exports = global.Promise ? global.Promise : Promise;
-	} else if (!global.Promise) {
-		global.Promise = Promise;
+(function() {
+    var root;
+
+	if (typeof window === 'object' && window) {
+		root = window;
+	} else {
+		root = global;
+	}
+
+	if (typeof module !== 'undefined' && module.exports) {
+		module.exports = root.Promise ? root.Promise : Promise;
+	} else if (!root.Promise) {
+		root.Promise = Promise;
 	}
 
 	// Use polyfill for setImmediate for performance gains
-	var asap = global.setImmediate || function(fn) { setTimeout(fn, 1); };
+	var asap = root.setImmediate || function(fn) { setTimeout(fn, 1); };
 
 	// Polyfill for Function.prototype.bind
 	function bind(fn, thisArg) {
@@ -175,4 +183,4 @@
 			}
 		});
 	};
-})(this || window);
+})();
