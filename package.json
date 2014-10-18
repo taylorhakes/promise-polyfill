@@ -1,7 +1,7 @@
 {
   "name": "promise-polyfill",
-  "version": "1.1.5",
-  "description": "Light weight promise polyfill. A+ compliant",
+  "version": "1.1.6",
+  "description": "Lightweight promise polyfill. A+ compliant",
   "main": "Promise.js",
   "scripts": {
     "test": "./node_modules/.bin/promises-aplus-tests tests/adapter.js"
