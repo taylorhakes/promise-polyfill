@@ -7,14 +7,8 @@
 		root = global;
 	}
 
-	if (typeof module !== 'undefined' && module.exports) {
-		module.exports = root.Promise ? root.Promise : Promise;
-	} else if (!root.Promise) {
-		root.Promise = Promise;
-	}
-
 	// Use polyfill for setImmediate for performance gains
-	var asap = root.setImmediate || function(fn) { setTimeout(fn, 1); };
+	var asap = Promise.immediateFn || root.setImmediate || function(fn) { setTimeout(fn, 1); };
 
 	// Polyfill for Function.prototype.bind
 	function bind(fn, thisArg) {
@@ -183,4 +177,10 @@
 			}
 		});
 	};
+
+	if (typeof module !== 'undefined' && module.exports) {
+		module.exports = Promise;
+	} else if (!root.Promise) {
+		root.Promise = Promise;
+	}
 })();
