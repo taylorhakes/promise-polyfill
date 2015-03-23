@@ -1,23 +1,5 @@
-(function() {
-    var root;
-
-	if (typeof window === 'object' && window) {
-		root = window;
-	} else {
-		root = global;
-	}
-
-	// Use polyfill for setImmediate for performance gains
-	var asap = Promise.immediateFn || root.setImmediate || function(fn) { setTimeout(fn, 1); };
-
-	// Polyfill for Function.prototype.bind
-	function bind(fn, thisArg) {
-		return function() {
-			fn.apply(thisArg, arguments);
-		}
-	}
-
-	var isArray = Array.isArray || function(value) { return Object.prototype.toString.call(value) === "[object Array]" };
+(function(root) {
+	var asap = Polymer.Base.async;
 
 	function Promise(fn) {
 		if (typeof this !== 'object') throw new TypeError('Promises must be constructed via new');
@@ -55,7 +37,7 @@
 
 	function resolve(newValue) {
 		try { //Promise Resolution Procedure: https://github.com/promises-aplus/promises-spec#the-promise-resolution-procedure
-			if (newValue === this) throw new TypeError('A promise cannot be resolved with itself.');
+			if (newValue === this) throw new TypeError('A promise can\'t resolve itself.');
 			if (newValue && (typeof newValue === 'object' || typeof newValue === 'function')) {
 				var then = newValue.then;
 				if (typeof then === 'function') {
@@ -126,7 +108,7 @@
 	};
 
 	Promise.all = function () {
-		var args = Array.prototype.slice.call(arguments.length === 1 && isArray(arguments[0]) ? arguments[0] : arguments);
+		var args = Array.prototype.slice.call(arguments.length === 1 && Array.isArray(arguments[0]) ? arguments[0] : arguments);
 
 		return new Promise(function (resolve, reject) {
 			if (args.length === 0) return resolve([]);
@@ -178,9 +160,5 @@
 		});
 	};
 
-	if (typeof module !== 'undefined' && module.exports) {
-		module.exports = Promise;
-	} else if (!root.Promise) {
-		root.Promise = Promise;
-	}
-})();
+  root.Promise = Promise;
+})(this);
