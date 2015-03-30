@@ -3,8 +3,10 @@
 
 	if (typeof window === 'object' && window) {
 		root = window;
-	} else {
+	} else if (typeof global === 'object' && global) {
 		root = global;
+	} else {
+		root = {};
 	}
 
 	// Use polyfill for setImmediate for performance gains
