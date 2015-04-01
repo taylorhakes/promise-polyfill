@@ -1,16 +1,8 @@
-(function() {
-    var root;
-
-	if (typeof window === 'object' && window) {
-		root = window;
-	} else if (typeof global === 'object' && global) {
-		root = global;
-	} else {
-		root = {};
-	}
+(function(root) {
 
 	// Use polyfill for setImmediate for performance gains
-	var asap = Promise.immediateFn || root.setImmediate || function(fn) { setTimeout(fn, 1); };
+	var asap = Promise.immediateFn || (typeof setImmediate === 'function' && setImmediate) ||
+		function(fn) { setTimeout(fn, 1); };
 
 	// Polyfill for Function.prototype.bind
 	function bind(fn, thisArg) {
@@ -185,4 +177,5 @@
 	} else if (!root.Promise) {
 		root.Promise = Promise;
 	}
-})();
+
+})(this);
