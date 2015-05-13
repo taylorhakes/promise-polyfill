@@ -47,6 +47,8 @@ prom.then(function() {
 By default promise-polyfill uses `setImmediate`, but falls back to `setTimeout` for executing asynchronously. If a browser does not support `setImmediate`, you may see performance issues.
 Use a `setImmediate` polyfill to fix this issue. [setAsap](https://github.com/taylorhakes/setAsap) or [setImmediate](https://github.com/YuzuJS/setImmediate) work well.
 
+If you polyfill `window.setImmediate` or define `Promise.immediateFn` it will be used instead of `window.setTimeout`
+
 ## Testing
 ```
 npm install
