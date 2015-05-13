@@ -33,8 +33,7 @@ var prom = new Promise(function(resolve, reject) {
 
   if (/* everything turned out fine */) {
     resolve("Stuff worked!");
-  }
-  else {
+  }  else {
     reject(new Error("It broke"));
   }
 });
