@@ -13,6 +13,9 @@ For API information about Promises, please check out this article [HTML5Rocks ar
 
 It is extremely lightweight. ***< 1kb Gzipped***
 
+## Browser Support
+IE8+, Chrome, Firefox, IOS 4+, Safari 5+, Opera
+
 ## Downloads
 
 - [Promise](https://raw.github.com/taylorhakes/promise-polyfill/master/Promise.js)
