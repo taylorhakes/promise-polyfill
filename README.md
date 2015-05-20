@@ -25,6 +25,10 @@ IE8+, Chrome, Firefox, IOS 4+, Safari 5+, Opera
 ```
 npm install promise-polyfill
 ```
+### Bower
+```
+bower install promise-polyfill
+```
 
 ## Simple use
 ```
