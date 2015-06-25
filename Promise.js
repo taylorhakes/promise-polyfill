@@ -172,6 +172,11 @@
 		});
 	};
 
+	/**
+	 * Set the immediate function to execute callbacks
+	 * @param fn {function} Function to execute
+	 * @private
+	 */
 	Promise._setImmediateFn = function _setImmediateFn(fn) {
 		asap = fn;
 	};
