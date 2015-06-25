@@ -1,6 +1,4 @@
-var assert = require('assert'),
-	sinon = require('sinon'),
-	Promise = require('../Promise');
+var Promise = require('../Promise');
 
 describe('Promise', function() {
 	describe('Promise._setImmediateFn', function() {
