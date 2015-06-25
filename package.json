@@ -4,7 +4,7 @@
   "description": "Lightweight promise polyfill. A+ compliant",
   "main": "Promise.js",
   "scripts": {
-    "test": "./node_modules/.bin/promises-aplus-tests tests/adapter.js"
+    "test": "./node_modules/.bin/promises-aplus-tests tests/adapter.js && JASMINE_CONFIG_PATH=jasmine.json ./node_modules/jasmine/bin/jasmine.js;"
   },
   "repository": {
     "type": "git",
@@ -17,10 +17,16 @@
   },
   "homepage": "https://github.com/taylorhakes/promise-polyfill",
   "devDependencies": {
-    "promises-aplus-tests": "*",
     "grunt": "^0.4.4",
-    "grunt-contrib-uglify": "^0.4.0"
+    "grunt-contrib-uglify": "^0.4.0",
+    "jasmine": "^2.3.1",
+    "promises-aplus-tests": "*"
   },
-  "keywords": ["promise", "promise-polyfill", "ES6", "promises-aplus"],
+  "keywords": [
+    "promise",
+    "promise-polyfill",
+    "ES6",
+    "promises-aplus"
+  ],
   "dependencies": {}
 }

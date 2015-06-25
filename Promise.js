@@ -1,7 +1,7 @@
 (function(root) {
 
 	// Use polyfill for setImmediate for performance gains
-	var asap = Promise.immediateFn || (typeof setImmediate === 'function' && setImmediate) ||
+	var asap = (typeof setImmediate === 'function' && setImmediate) ||
 		function(fn) { setTimeout(fn, 1); };
 
 	// Polyfill for Function.prototype.bind
@@ -170,6 +170,10 @@
 				values[i].then(resolve, reject);
 			}
 		});
+	};
+
+	Promise._setImmediateFn = function _setImmediateFn(fn) {
+		asap = fn;
 	};
 
 	if (typeof module !== 'undefined' && module.exports) {
