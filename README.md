@@ -5,7 +5,7 @@
 Promise [![Build Status](https://travis-ci.org/taylorhakes/promise-polyfill.png?branch=master)](https://travis-ci.org/taylorhakes/promise-polyfill)
 =============
 
-Lightweight promise polyfill for the browser and node. A+ Compliant. It is a perfect polyfill IE, Firefox or any other browser that does not support native promises.
+Lightweight ES6 Promise polyfill for the browser and node. Adheres closely to the spec. It is a perfect polyfill IE, Firefox or any other browser that does not support native promises.
 
 This implementation is based on [then/promise](https://github.com/then/promise). It has been changed to use the prototype for performance and memory reasons.
 
