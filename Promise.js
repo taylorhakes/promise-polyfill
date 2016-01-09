@@ -1,6 +1,7 @@
 (function(root) {
-    // Store setTimeout reference so promise-polyfill will be unaffected by
-    // other code modifying setTimeout (like sinon.useFakeTimers())
+
+	// Store setTimeout reference so promise-polyfill will be unaffected by
+	// other code modifying setTimeout (like sinon.useFakeTimers())
 	var setTimeout = setTimeout;
 
 	// Use polyfill for setImmediate for performance gains
