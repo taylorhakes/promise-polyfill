@@ -20,7 +20,15 @@
     "grunt": "^0.4.4",
     "grunt-contrib-uglify": "^0.4.0",
     "jasmine": "^2.3.1",
-    "promises-aplus-tests": "*"
+    "karma": "^0.13.19",
+    "karma-browserify": "^4.4.2",
+    "karma-mocha": "^0.2.1",
+    "karma-phantomjs-launcher": "^0.2.3",
+    "mocha": "^2.3.4",
+    "phantomjs": "^1.9.19",
+    "promises-aplus-tests": "*",
+    "sinon": "^1.17.2",
+    "webpack": "^1.12.11"
   },
   "keywords": [
     "promise",
