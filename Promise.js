@@ -2,11 +2,11 @@
 
 	// Store setTimeout reference so promise-polyfill will be unaffected by
 	// other code modifying setTimeout (like sinon.useFakeTimers())
-	var setTimeout = setTimeout;
+	var setTimeoutFunc = setTimeout;
 
 	// Use polyfill for setImmediate for performance gains
 	var asap = (typeof setImmediate === 'function' && setImmediate) ||
-		function(fn) { setTimeout(fn, 1); };
+		function(fn) { setTimeoutFunc(fn, 1); };
 
 	// Polyfill for Function.prototype.bind
 	function bind(fn, thisArg) {
