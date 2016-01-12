@@ -4,6 +4,8 @@
 	// other code modifying setTimeout (like sinon.useFakeTimers())
 	var setTimeout = setTimeout;
 
+	function noop() {}
+
 	// Use polyfill for setImmediate for performance gains
 	var asap = (typeof setImmediate === 'function' && setImmediate) ||
 		function(fn) { setTimeout(fn, 1); };
@@ -38,20 +40,20 @@
 		asap(function() {
 			var cb = self._state === 1 ? deferred.onFulfilled : deferred.onRejected
 			if (cb === null) {
-				(self._state === 1 ? deferred.resolve : deferred.reject)(self._value);
+				(self._state === 1 ? resolve : reject)(deferred.promise, self._value);
 				return;
 			}
 			var ret;
 			try {
 				ret = cb(self._value);
 			} catch (e) {
-				deferred.reject(e);
+				reject(deferred.promise, e);
 				return;
 			}
-			deferred.resolve(ret);
+			resolve(deferred.promise, ret);
 		})
 	}
-
+t
 	function resolve(self, newValue) {
 		try { //Promise Resolution Procedure: https://github.com/promises-aplus/promises-spec#the-promise-resolution-procedure
 			if (newValue === self) throw new TypeError('A promise cannot be resolved with itself.');
@@ -86,11 +88,10 @@
 		self._deferreds = null;
 	}
 
-	function Handler(onFulfilled, onRejected, resolve, reject){
+	function Handler(onFulfilled, onRejected, promise){
 		this.onFulfilled = typeof onFulfilled === 'function' ? onFulfilled : null;
 		this.onRejected = typeof onRejected === 'function' ? onRejected : null;
-		this.resolve = resolve;
-		this.reject = reject;
+		this.promise = promise;
 	}
 
 	/**
@@ -123,10 +124,9 @@
 	};
 
 	Promise.prototype.then = function(onFulfilled, onRejected) {
-		var me = this;
-		return new Promise(function(resolve, reject) {
-			handle(me, new Handler(onFulfilled, onRejected, resolve, reject));
-		})
+		var prom = new Promise(noop);
+		handle(this, new Handler(onFulfilled, onRejected, prom));
+		return prom;
 	};
 
 	Promise.all = function () {
