@@ -4,7 +4,7 @@
   "description": "Lightweight promise polyfill. A+ compliant",
   "main": "Promise.js",
   "scripts": {
-    "test": "./node_modules/.bin/promises-aplus-tests tests/adapter.js && JASMINE_CONFIG_PATH=jasmine.json ./node_modules/jasmine/bin/jasmine.js;"
+    "test": "./node_modules/.bin/mocha && ./node_modules/.bin/karma start --single-run"
   },
   "repository": {
     "type": "git",
@@ -22,6 +22,7 @@
     "jasmine": "^2.3.1",
     "karma": "^0.13.19",
     "karma-browserify": "^4.4.2",
+    "karma-chrome-launcher": "^0.2.2",
     "karma-mocha": "^0.2.1",
     "karma-phantomjs-launcher": "^0.2.3",
     "mocha": "^2.3.4",

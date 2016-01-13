@@ -15,7 +15,7 @@ module.exports = function (config) {
 
 		// list of files / patterns to load in the browser
 		files: [
-			'tests/Promise.js'
+			'test/Promise.js'
 		],
 
 
@@ -26,7 +26,7 @@ module.exports = function (config) {
 		// preprocess matching files before serving them to the browser
 		// available preprocessors: https://npmjs.org/browse/keyword/karma-preprocessor
 		preprocessors: {
-			'tests/Promise.js': ['browserify']
+			'test/Promise.js': ['browserify']
 		},
 
 
@@ -55,7 +55,7 @@ module.exports = function (config) {
 
 		// start these browsers
 		// available browser launchers: https://npmjs.org/browse/keyword/karma-launcher
-		browsers: ['PhantomJS'],
+		browsers: ['Chrome'],
 
 
 		// Continuous Integration mode
@@ -69,7 +69,7 @@ module.exports = function (config) {
 		plugins: [
 			'karma-browserify',
 			'karma-mocha',
-			'karma-phantomjs-launcher'
+			'karma-chrome-launcher'
 		]
 	})
 }
