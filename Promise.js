@@ -4,6 +4,8 @@
 	// other code modifying setTimeout (like sinon.useFakeTimers())
 	var setTimeoutFunc = setTimeout;
 
+	function noop() {}
+
 	// Use polyfill for setImmediate for performance gains
 	var asap = (typeof setImmediate === 'function' && setImmediate) ||
 		function(fn) { setTimeoutFunc(fn, 1); };
@@ -20,71 +22,76 @@
 	function Promise(fn) {
 		if (typeof this !== 'object') throw new TypeError('Promises must be constructed via new');
 		if (typeof fn !== 'function') throw new TypeError('not a function');
-		this._state = null;
-		this._value = null;
-		this._deferreds = []
+		this._state = 0;
+		this._value = undefined;
+		this._deferreds = [];
 
-		doResolve(fn, bind(resolve, this), bind(reject, this))
+		doResolve(fn, this)
 	}
 
-	function handle(deferred) {
-		var me = this;
-		if (this._state === null) {
-			this._deferreds.push(deferred);
+	function handle(self, deferred) {
+		while (self._state === 3) {
+			self = self._value;
+		}
+		if (self._state === 0) {
+			self._deferreds.push(deferred);
 			return
 		}
 		asap(function() {
-			var cb = me._state ? deferred.onFulfilled : deferred.onRejected
+			var cb = self._state === 1 ? deferred.onFulfilled : deferred.onRejected
 			if (cb === null) {
-				(me._state ? deferred.resolve : deferred.reject)(me._value);
+				(self._state === 1 ? resolve : reject)(deferred.promise, self._value);
 				return;
 			}
 			var ret;
 			try {
-				ret = cb(me._value);
-			}
-			catch (e) {
-				deferred.reject(e);
+				ret = cb(self._value);
+			} catch (e) {
+				reject(deferred.promise, e);
 				return;
 			}
-			deferred.resolve(ret);
+			resolve(deferred.promise, ret);
 		})
 	}
-
-	function resolve(newValue) {
+t
+	function resolve(self, newValue) {
 		try { //Promise Resolution Procedure: https://github.com/promises-aplus/promises-spec#the-promise-resolution-procedure
-			if (newValue === this) throw new TypeError('A promise cannot be resolved with itself.');
+			if (newValue === self) throw new TypeError('A promise cannot be resolved with itself.');
 			if (newValue && (typeof newValue === 'object' || typeof newValue === 'function')) {
 				var then = newValue.then;
-				if (typeof then === 'function') {
-					doResolve(bind(then, newValue), bind(resolve, this), bind(reject, this));
+				if (newValue instanceof Promise) {
+					self._state = 3;
+					self._value = newValue;
+					finale(self);
+					return;
+				} else if (typeof then === 'function') {
+					doResolve(bind(then, newValue), self);
 					return;
 				}
 			}
-			this._state = true;
-			this._value = newValue;
-			finale.call(this);
-		} catch (e) { reject.call(this, e); }
+			self._state = 1;
+			self._value = newValue;
+			finale(self);
+		} catch (e) { reject(self, e); }
 	}
 
-	function reject(newValue) {
-		this._state = false;
-		this._value = newValue;
-		finale.call(this);
+	function reject(self, newValue) {
+		self._state = 2;
+		self._value = newValue;
+		finale(self);
 	}
 
-	function finale() {
-		for (var i = 0, len = this._deferreds.length; i < len; i++) {
-			handle.call(this, this._deferreds[i]);
+	function finale(self) {
+		for (var i = 0, len = self._deferreds.length; i < len; i++) {
+			handle(self, self._deferreds[i]);
 		}
-		this._deferreds = null;
+		self._deferreds = null;
 	}
 
-	function Handler(onFulfilled, onRejected, resolve, reject){
+	function Handler(onFulfilled, onRejected, promise){
 		this.onFulfilled = typeof onFulfilled === 'function' ? onFulfilled : null;
 		this.onRejected = typeof onRejected === 'function' ? onRejected : null;
-		this.resolve = resolve;
-		this.reject = reject;
+		this.promise = promise;
 	}
 
 	/**
@@ -93,22 +100,22 @@
 	 *
 	 * Makes no guarantees about asynchrony.
 	 */
-	function doResolve(fn, onFulfilled, onRejected) {
+	function doResolve(fn, self) {
 		var done = false;
 		try {
 			fn(function (value) {
 				if (done) return;
 				done = true;
-				onFulfilled(value);
+				resolve(self, value);
 			}, function (reason) {
 				if (done) return;
 				done = true;
-				onRejected(reason);
+				reject(self, reason);
 			})
 		} catch (ex) {
 			if (done) return;
 			done = true;
-			onRejected(ex);
+			reject(self, ex);
 		}
 	}
 
@@ -117,10 +124,9 @@
 	};
 
 	Promise.prototype.then = function(onFulfilled, onRejected) {
-		var me = this;
-		return new Promise(function(resolve, reject) {
-			handle.call(me, new Handler(onFulfilled, onRejected, resolve, reject));
-		})
+		var prom = new Promise(noop);
+		handle(this, new Handler(onFulfilled, onRejected, prom));
+		return prom;
 	};
 
 	Promise.all = function () {
