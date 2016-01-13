@@ -53,7 +53,7 @@
 			resolve(deferred.promise, ret);
 		})
 	}
-t
+
 	function resolve(self, newValue) {
 		try { //Promise Resolution Procedure: https://github.com/promises-aplus/promises-spec#the-promise-resolution-procedure
 			if (newValue === self) throw new TypeError('A promise cannot be resolved with itself.');
