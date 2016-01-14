@@ -2,7 +2,7 @@
     <img src="http://promises-aplus.github.com/promises-spec/assets/logo-small.png"
          align="right" alt="Promises/A+ logo" />
 </a>
-# Promise 
+# Promise
 [![travis][travis-image]][travis-url]
 
 [travis-image]: https://img.shields.io/travis/taylorhakes/promise-polyfill.svg?style=flat
@@ -51,11 +51,20 @@ prom.then(function() {
   ...
 });
 ```
+
 ## Performance
-By default promise-polyfill uses `setImmediate`, but falls back to `setTimeout` for executing asynchronously. If a browser does not support `setImmediate`, you may see performance issues.
+By default promise-polyfill uses `setImmediate`, but falls back to `setTimeout` for executing asynchronously. If a browser does not support `setImmediate` (IE/Edge are the only browsers with setImmediate), you may see performance issues.
 Use a `setImmediate` polyfill to fix this issue. [setAsap](https://github.com/taylorhakes/setAsap) or [setImmediate](https://github.com/YuzuJS/setImmediate) work well.
 
 If you polyfill `window.setImmediate` or use `Promise._setImmediateFn(immedateFn)` it will be used instead of `window.setTimeout`
+```
+npm install setasap --save
+```
+```js
+var Promise = require('promise-polyfill');
+var setAsap = require('setasap');
+Promise._setImmedateFn(setAsap);
+```
 
 ## Testing
 ```
