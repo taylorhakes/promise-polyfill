@@ -35,7 +35,7 @@ bower install promise-polyfill
 ```
 
 ## Simple use
-```
+```js
 var prom = new Promise(function(resolve, reject) {
   // do a thing, possibly async, then…
 
