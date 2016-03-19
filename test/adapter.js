@@ -11,4 +11,4 @@ module.exports = {
 		obj.promise = prom;
 		return obj;
 	}
-}
+};
