@@ -1,4 +1,4 @@
-var Promise = require('../Promise');
+var Promise = require('../promise');
 module.exports = {
 	resolved: Promise.resolve,
 	rejected: Promise.rejected,

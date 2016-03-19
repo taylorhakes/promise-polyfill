@@ -1,4 +1,4 @@
-var Promise = require('../Promise');
+var Promise = require('../promise');
 var sinon = require('sinon');
 var assert = require('assert');
 var adapter = require('./adapter');
