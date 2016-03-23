@@ -22,8 +22,8 @@ IE8+, Chrome, Firefox, IOS 4+, Safari 5+, Opera
 
 ## Downloads
 
-- [Promise](https://raw.github.com/taylorhakes/promise-polyfill/master/Promise.js)
-- [Promise-min](https://raw.github.com/taylorhakes/promise-polyfill/master/Promise.min.js)
+- [Promise](https://raw.github.com/taylorhakes/promise-polyfill/master/promise.js)
+- [Promise-min](https://raw.github.com/taylorhakes/promise-polyfill/master/promise.min.js)
 
 ### Node
 ```
