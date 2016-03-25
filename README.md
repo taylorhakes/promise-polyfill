@@ -63,7 +63,7 @@ npm install setasap --save
 ```js
 var Promise = require('promise-polyfill');
 var setAsap = require('setasap');
-Promise._setImmedateFn(setAsap);
+Promise._setImmediateFn(setAsap);
 ```
 
 ## Unhandled Rejections
