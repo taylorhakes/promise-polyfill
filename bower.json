@@ -6,7 +6,7 @@
     "Taylor Hakes"
   ],
   "description": "Lightweight promise polyfill for the browser and node. A+ Compliant.",
-  "main": "Promise.js",
+  "main": "promise.js",
   "moduleType": [
     "globals",
     "node"
