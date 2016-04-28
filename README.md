@@ -44,9 +44,8 @@ var prom = new Promise(function(resolve, reject) {
   }
 });
 
-// Do something when async done
-prom.then(function() {
-  ...
+prom.then(function(result) {
+  // Do something when async done
 });
 ```
 
