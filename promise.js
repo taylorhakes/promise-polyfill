@@ -26,10 +26,6 @@
     };
   }
 
-  var isArray = Array.isArray || function (value) {
-    return Object.prototype.toString.call(value) === '[object Array]';
-  };
-
   function Promise(fn) {
     if (typeof this !== 'object') throw new TypeError('Promises must be constructed via new');
     if (typeof fn !== 'function') throw new TypeError('not a function');
@@ -153,8 +149,8 @@
     return prom;
   };
 
-  Promise.all = function () {
-    var args = Array.prototype.slice.call(arguments.length === 1 && isArray(arguments[0]) ? arguments[0] : arguments);
+  Promise.all = function (arr) {
+    var args = Array.prototype.slice.call(arr);
 
     return new Promise(function (resolve, reject) {
       if (args.length === 0) return resolve([]);
