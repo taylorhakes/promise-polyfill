@@ -95,11 +95,11 @@
 
   function finale(self) {
     if (self._state === 2 && self._deferreds.length === 0) {
-      setTimeout(function() {
+      asap(function() {
         if (!self._handled) {
           onUnhandledRejection(self._value);
         }
-      }, 1);
+      });
     }
     
     for (var i = 0, len = self._deferreds.length; i < len; i++) {
