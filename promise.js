@@ -95,7 +95,7 @@
 
   function finale(self) {
     if (self._state === 2 && self._deferreds.length === 0) {
-      setTimeout(function() {
+      asap(function() {
         if (!self._handled) {
           onUnhandledRejection(self._value);
         }

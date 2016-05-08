@@ -7,6 +7,12 @@ describe("Promises/A+ Tests", function () {
 });
 describe('Promise', function () {
   describe('Promise._setImmediateFn', function () {
+    afterEach(function() {
+      Promise._setImmediateFn((typeof setImmediate === 'function' && setImmediate) ||
+      function (fn) {
+        setTimeout(fn, 1);
+      });
+    });
     it('changes immediate fn', function () {
       var spy = sinon.spy();
   
@@ -75,7 +81,7 @@ describe('Promise', function () {
       setTimeout(function() {
         assert(!stub.called);
         done();
-      }, 200);
+      }, 50);
     });
     it('error single Promise', function (done) {
       new Promise(function(resolve, reject) {
@@ -84,7 +90,7 @@ describe('Promise', function () {
       setTimeout(function() {
         assert(stub.calledOnce);
         done();
-      }, 200);
+      }, 50);
     });
     it('multi promise error', function (done) {
       new Promise(function(resolve, reject) {
@@ -95,7 +101,7 @@ describe('Promise', function () {
       setTimeout(function() {
         assert(stub.calledOnce);
         done();
-      }, 200);
+      }, 50);
     });
     it('promise catch no error', function (done) {
       new Promise(function(resolve, reject) {
@@ -106,7 +112,7 @@ describe('Promise', function () {
       setTimeout(function() {
         assert(!stub.called);
         done();
-      }, 200);
+      }, 50);
     });
     it('promise catch no error', function (done) {
       new Promise(function(resolve, reject) {
@@ -119,14 +125,14 @@ describe('Promise', function () {
       setTimeout(function() {
         assert(!stub.called);
         done();
-      }, 200);
+      }, 50);
     });
     it('promise reject error', function (done) {
       Promise.reject('hello');
       setTimeout(function() {
         assert(stub.calledOnce);
         done();
-      }, 200);
+      }, 50);
     });
     it('promise reject error late', function (done) {
       var prom = Promise.reject('hello');
@@ -136,14 +142,14 @@ describe('Promise', function () {
       setTimeout(function() {
         assert(!stub.called);
         done();
-      }, 200);
+      }, 50);
     });
     it('promise reject error late', function (done) {
       Promise.reject('hello');
       setTimeout(function() {
         assert.equal(stub.args[0][1], 'hello');
         done();
-      }, 200);
+      }, 50);
     });
   });
 }); 
