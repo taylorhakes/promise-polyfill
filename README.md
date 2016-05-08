@@ -20,7 +20,7 @@ IE8+, Chrome, Firefox, IOS 4+, Safari 5+, Opera
 
 ### NPM Use
 ```
-npm install promise-polyfill
+npm install promise-polyfill --save-exact
 ```
 ### Bower Use
 ```
