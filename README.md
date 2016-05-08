@@ -2,7 +2,7 @@
     <img src="http://promises-aplus.github.com/promises-spec/assets/logo-small.png"
          align="right" alt="Promises/A+ logo" />
 </a>
-# Promise
+# Promise Polyfill
 [![travis][travis-image]][travis-url]
 
 [travis-image]: https://img.shields.io/travis/taylorhakes/promise-polyfill.svg?style=flat
