@@ -15,7 +15,7 @@ describe('Promise', function () {
     });
     it('changes immediate fn', function () {
       var spy = sinon.spy();
-  
+
       function immediateFn(fn) {
         spy();
         fn();
@@ -32,19 +32,19 @@ describe('Promise', function () {
     });
     it('changes immediate fn multiple', function () {
       var spy1 = sinon.spy();
-  
+
       function immediateFn1(fn) {
         spy1();
         fn();
       }
-  
+
       var spy2 = sinon.spy();
-  
+
       function immediateFn2(fn) {
         spy2();
         fn();
       }
-  
+
       Promise._setImmediateFn(immediateFn1);
       var done = false;
       new Promise(function (resolve) {
@@ -137,7 +137,7 @@ describe('Promise', function () {
     it('promise reject error late', function (done) {
       var prom = Promise.reject('hello');
       prom.catch(function() {
-        
+
       });
       setTimeout(function() {
         assert(!stub.called);
@@ -150,6 +150,30 @@ describe('Promise', function () {
         assert.equal(stub.args[0][1], 'hello');
         done();
       }, 50);
+    });
+  });
+  describe('Promise.prototype.then', function() {
+    function Subclass() {
+      Promise.apply(this, arguments);
+    }
+
+    Object.setPrototypeOf(Subclass.prototype, Promise.prototype);
+
+    it('subclassed Promise resolves to subclass', function() {
+      var prom = new Subclass(function(resolve) {
+        resolve();
+      }).then(function() {
+        assert(prom instanceof Subclass);
+      });
+    });
+    it('subclassed Promise rejects to subclass', function() {
+      var spy = sinon.spy(),
+        prom = new Subclass(function(_, reject) {
+          reject();
+        }).then(spy, function() {
+          assert(spy.not.called);
+          assert(prom instanceof Subclass);
+        });
     });
   });
 }); 
