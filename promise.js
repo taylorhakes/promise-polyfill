@@ -144,8 +144,7 @@
   };
 
   Promise.prototype.then = function (onFulfilled, onRejected) {
-    var ctor = this.constructor,
-      prom = new (ctor !== Promise ? ctor : Promise)(noop);
+    var prom = new (this.constructor)(noop);
 
     handle(this, new Handler(onFulfilled, onRejected, prom));
     return prom;

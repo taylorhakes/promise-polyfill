@@ -153,25 +153,34 @@ describe('Promise', function () {
     });
   });
   describe('Promise.prototype.then', function() {
+    var spy1 = sinon.spy();
+
     function Subclass() {
+      spy1();
       Promise.apply(this, arguments);
     }
 
     Object.setPrototypeOf(Subclass.prototype, Promise.prototype);
 
+    Subclass.prototype.then = function() {
+      return Promise.prototype.then.apply(this, arguments);
+    };
+
     it('subclassed Promise resolves to subclass', function() {
       var prom = new Subclass(function(resolve) {
         resolve();
       }).then(function() {
+        assert(spy1.called);
         assert(prom instanceof Subclass);
       });
     });
     it('subclassed Promise rejects to subclass', function() {
-      var spy = sinon.spy(),
+      var spy2 = sinon.spy(),
         prom = new Subclass(function(_, reject) {
           reject();
-        }).then(spy, function() {
-          assert(spy.not.called);
+        }).then(spy2, function() {
+          assert(spy1.called);
+          assert(spy2.not.called);
           assert(prom instanceof Subclass);
         });
     });
