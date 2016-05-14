@@ -15,11 +15,11 @@ describe('Promise', function () {
     });
     it('changes immediate fn', function () {
       var spy = sinon.spy();
-  
+
       function immediateFn(fn) {
         spy();
         fn();
-      };
+      }
       Promise._setImmediateFn(immediateFn);
       var done = false;
       new Promise(function (resolve) {
@@ -32,19 +32,19 @@ describe('Promise', function () {
     });
     it('changes immediate fn multiple', function () {
       var spy1 = sinon.spy();
-  
+
       function immediateFn1(fn) {
         spy1();
         fn();
       }
-  
+
       var spy2 = sinon.spy();
-  
+
       function immediateFn2(fn) {
         spy2();
         fn();
       }
-  
+
       Promise._setImmediateFn(immediateFn1);
       var done = false;
       new Promise(function (resolve) {
@@ -137,7 +137,7 @@ describe('Promise', function () {
     it('promise reject error late', function (done) {
       var prom = Promise.reject('hello');
       prom.catch(function() {
-        
+
       });
       setTimeout(function() {
         assert(!stub.called);
@@ -150,6 +150,39 @@ describe('Promise', function () {
         assert.equal(stub.args[0][1], 'hello');
         done();
       }, 50);
+    });
+  });
+  describe('Promise.prototype.then', function() {
+    var spy,
+        SubClass;
+    beforeEach(function() {
+      spy = sinon.spy();
+      SubClass = function() {
+        spy();
+        Promise.apply(this, arguments);
+      };
+
+      function __() { this.constructor = SubClass; }
+      __.prototype = Promise.prototype;
+      SubClass.protptype = new __();
+
+      SubClass.prototype.then = function() {
+        return Promise.prototype.then.apply(this, arguments);
+      };
+    });
+    it('subclassed Promise resolves to subclass', function() {
+      var prom = new SubClass(function(resolve) {
+        resolve();
+      }).then(function() {}, function() {});
+      assert(spy.calledTwice);
+      assert(prom instanceof SubClass);
+    });
+    it('subclassed Promise rejects to subclass', function() {
+      var prom = new SubClass(function(_, reject) {
+        reject();
+      }).then(function() {}, function() {});
+      assert(spy.calledTwice);
+      assert(prom instanceof SubClass);
     });
   });
 }); 

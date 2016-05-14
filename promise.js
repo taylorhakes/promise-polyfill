@@ -101,7 +101,7 @@
         }
       }, 1);
     }
-    
+
     for (var i = 0, len = self._deferreds.length; i < len; i++) {
       handle(self, self._deferreds[i]);
     }
@@ -144,7 +144,8 @@
   };
 
   Promise.prototype.then = function (onFulfilled, onRejected) {
-    var prom = new Promise(noop);
+    var prom = new (this.constructor)(noop);
+
     handle(this, new Handler(onFulfilled, onRejected, prom));
     return prom;
   };
@@ -214,7 +215,7 @@
   Promise._setImmediateFn = function _setImmediateFn(fn) {
     asap = fn;
   };
-  
+
   Promise._setUnhandledRejectionFn = function _setUnhandledRejectionFn(fn) {
     onUnhandledRejection = fn;
   };
