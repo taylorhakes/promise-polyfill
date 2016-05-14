@@ -99,7 +99,7 @@
         if (!self._handled) {
           onUnhandledRejection(self._value);
         }
-      }, 1);
+      });
     }
 
     for (var i = 0, len = self._deferreds.length; i < len; i++) {
