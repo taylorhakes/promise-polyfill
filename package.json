@@ -1,6 +1,6 @@
 {
   "name": "promise-polyfill",
-  "version": "5.1.0",
+  "version": "5.2.0",
   "description": "Lightweight promise polyfill. A+ compliant",
   "main": "promise.js",
   "scripts": {
