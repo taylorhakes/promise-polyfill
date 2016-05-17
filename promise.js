@@ -10,7 +10,7 @@
   // Use polyfill for setImmediate for performance gains
   var asap = (typeof setImmediate === 'function' && setImmediate) ||
     function (fn) {
-      setTimeoutFunc(fn, 1);
+      setTimeoutFunc(fn, 0);
     };
 
   var onUnhandledRejection = function onUnhandledRejection(err) {
