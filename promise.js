@@ -143,6 +143,21 @@
     return this.then(null, onRejected);
   };
 
+  Promise.prototype['finally'] = function (onAny) {
+    return this.then(
+      function (value) {
+        return Promise.resolve(onAny()).then(function () {
+          return value;
+        });
+      },
+      function (reason) {
+        return Promise.resolve(onAny()).then(function () {
+          throw reason;
+        });
+      }
+    );
+  };
+
   Promise.prototype.then = function (onFulfilled, onRejected) {
     var prom = new (this.constructor)(noop);
 

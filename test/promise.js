@@ -5,6 +5,62 @@ var adapter = require('./adapter');
 describe("Promises/A+ Tests", function () {
   require("promises-aplus-tests").mocha(adapter);
 });
+describe('Promise.prototype.finally', function () {
+  it('is called when promise is resolved', function (done) {
+    var spy = sinon.spy();
+    Promise.resolve().finally(spy);
+    setTimeout(function () {
+      assert(spy.called);
+      done();
+    }, 50);
+  });
+  it('is called when promise is rejected', function (done) {
+    var spy = sinon.spy();
+    Promise.reject().finally(spy);
+    setTimeout(function () {
+      assert(spy.called);
+      done();
+    }, 50);
+  });
+  it('promise is still rejected', function (done) {
+    var spy = sinon.spy();
+    Promise.reject().finally(function () { }).catch(spy);
+    setTimeout(function () {
+      assert(spy.called);
+      done();
+    }, 50);
+  });
+  it('passes original resolved value', function (done) {
+    var spy = sinon.spy();
+    Promise.resolve("original").finally(function () {
+      return "changed";
+    }).then(spy);
+    setTimeout(function () {
+      assert(spy.calledWith("original"));
+      done();
+    }, 50);
+  });
+  it('can reject', function (done) {
+    var spy = sinon.spy();
+    Promise.resolve().finally(function () {
+      return Promise.reject();
+    }).catch(spy);
+    setTimeout(function () {
+      assert(spy.called);
+      done();
+    }, 50);
+  });
+  it('can reject rejected promise with new reason', function (done) {
+    var spy = sinon.spy();
+    Promise.reject("original").finally(function () {
+      return Promise.reject("changed");
+    }).catch(spy);
+    setTimeout(function () {
+      assert(spy.calledWith("changed"));
+      done();
+    }, 50);
+  });
+});
 describe('Promise', function () {
   describe('Promise._setImmediateFn', function () {
     afterEach(function() {
