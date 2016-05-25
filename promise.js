@@ -144,14 +144,15 @@
   };
 
   Promise.prototype['finally'] = function (onAny) {
+    var constructor = this.constructor;
     return this.then(
       function (value) {
-        return Promise.resolve(onAny()).then(function () {
+        return constructor.resolve(onAny()).then(function () {
           return value;
         });
       },
       function (reason) {
-        return Promise.resolve(onAny()).then(function () {
+        return constructor.resolve(onAny()).then(function () {
           throw reason;
         });
       }
