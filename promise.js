@@ -4,21 +4,8 @@
   // other code modifying setTimeout (like sinon.useFakeTimers())
   var setTimeoutFunc = setTimeout;
 
-  function noop() {
-  }
-
-  // Use polyfill for setImmediate for performance gains
-  var asap = (typeof setImmediate === 'function' && setImmediate) ||
-    function (fn) {
-      setTimeoutFunc(fn, 0);
-    };
-
-  var onUnhandledRejection = function onUnhandledRejection(err) {
-    if (typeof console !== 'undefined' && console) {
-      console.warn('Possible Unhandled Promise Rejection:', err); // eslint-disable-line no-console
-    }
-  };
-
+  function noop() {}
+  
   // Polyfill for Function.prototype.bind
   function bind(fn, thisArg) {
     return function () {
@@ -46,7 +33,7 @@
       return;
     }
     self._handled = true;
-    asap(function () {
+    Promise._immediateFn(function () {
       var cb = self._state === 1 ? deferred.onFulfilled : deferred.onRejected;
       if (cb === null) {
         (self._state === 1 ? resolve : reject)(deferred.promise, self._value);
@@ -95,9 +82,9 @@
 
   function finale(self) {
     if (self._state === 2 && self._deferreds.length === 0) {
-      asap(function() {
+      Promise._immediateFn(function() {
         if (!self._handled) {
-          onUnhandledRejection(self._value);
+          Promise._unhandledRejectionFn(self._value);
         }
       });
     }
@@ -207,19 +194,36 @@
     });
   };
 
+  // Use polyfill for setImmediate for performance gains
+  Promise._immediateFn = (typeof setImmediate === 'function' && setImmediate) ||
+    function (fn) {
+      setTimeoutFunc(fn, 0);
+    };
+
+  Promise._unhandledRejectionFn = function _unhandledRejectionFn(err) {
+    if (typeof console !== 'undefined' && console) {
+      console.warn('Possible Unhandled Promise Rejection:', err); // eslint-disable-line no-console
+    }
+  };
+
   /**
    * Set the immediate function to execute callbacks
    * @param fn {function} Function to execute
-   * @private
+   * @deprecated
    */
   Promise._setImmediateFn = function _setImmediateFn(fn) {
-    asap = fn;
+    Promise._immediateFn = fn;
   };
 
+  /**
+   * Change the function to execute on unhandled rejection
+   * @param {function} fn Function to execute on unhandled rejection
+   * @deprecated
+   */
   Promise._setUnhandledRejectionFn = function _setUnhandledRejectionFn(fn) {
-    onUnhandledRejection = fn;
+    Promise._unhandledRejectionFn = fn;
   };
-
+  
   if (typeof module !== 'undefined' && module.exports) {
     module.exports = Promise;
   } else if (!root.Promise) {

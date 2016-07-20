@@ -49,25 +49,30 @@ prom.then(function(result) {
 });
 ```
 
+## Deprecations
+- `Promise._setImmediateFn(<immediateFn>)` has been deprecated. Use `Promise._immediateFn = <immediateFn>;` instead.
+- `Promise._setUnhandledRejectionFn(<rejectionFn>)` has been deprecated. Use `Promise._unhandledRejectionFn = <rejectionFn>` instead.
+These functions will be removed in the next major version.
+
 ## Performance
 By default promise-polyfill uses `setImmediate`, but falls back to `setTimeout` for executing asynchronously. If a browser does not support `setImmediate` (IE/Edge are the only browsers with setImmediate), you may see performance issues.
 Use a `setImmediate` polyfill to fix this issue. [setAsap](https://github.com/taylorhakes/setAsap) or [setImmediate](https://github.com/YuzuJS/setImmediate) work well.
 
-If you polyfill `window.setImmediate` or use `Promise._setImmediateFn(immedateFn)` it will be used instead of `window.setTimeout`
+If you polyfill `window.setImmediate` or use `Promise._immediateFn = yourImmediateFn` it will be used instead of `window.setTimeout`
 ```
 npm install setasap --save
 ```
 ```js
 var Promise = require('promise-polyfill');
 var setAsap = require('setasap');
-Promise._setImmediateFn(setAsap);
+Promise._immediateFn = setAsap;
 ```
 
 ## Unhandled Rejections
 promise-polyfill will warn you about possibly unhandled rejections. It will show a console warning if a Promise is rejected, but no `.catch` is used. You can turn off this behavior by setting `Promise._setUnhandledRejectionFn(<rejectError>)`.
 If you would like to disable unhandled rejections. Use a noop like below.
 ```js
-Promise._setUnhandledRejectionFn(function(rejectError) {});
+Promise._unhandledRejectionFn = function(rejectError) {};
 ```
 
 
