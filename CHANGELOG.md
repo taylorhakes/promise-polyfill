@@ -1,8 +1,8 @@
 # Changelog
 
 ## 6.0.0 Deprecated `Promise._setImmediateFn` and `Promise._setUnhandledRejectionFn`
-This allows subsclassing Promise much easier
-- `Promise._setImmediateFn(<immediateFn>)` has been deprecated. Use `Promise._immediateFn = <immediateFn>;` instead.
+This allows subclassing Promise without rewriting functions
+- `Promise._setImmediateFn(<immediateFn>)` has been deprecated. Use `Promise._immediateFn = <immediateFn>` instead.
 - `Promise._setUnhandledRejectionFn(<rejectionFn>)` has been deprecated. Use `Promise._unhandledRejectionFn = <rejectionFn>` instead.
 These functions will be removed in the next major version.
 
