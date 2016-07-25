@@ -195,7 +195,7 @@
   };
 
   // Use polyfill for setImmediate for performance gains
-  Promise._immediateFn = (typeof setImmediate === 'function' && setImmediate) ||
+  Promise._immediateFn = (typeof setImmediate === 'function' && function (fn) { setImmediate(fn); }) ||
     function (fn) {
       setTimeoutFunc(fn, 0);
     };
