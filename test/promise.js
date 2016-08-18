@@ -164,7 +164,7 @@ describe('Promise', function () {
 
       function __() { this.constructor = SubClass; }
       __.prototype = Promise.prototype;
-      SubClass.protptype = new __();
+      SubClass.prototype = new __();
 
       SubClass.prototype.then = function() {
         return Promise.prototype.then.apply(this, arguments);
