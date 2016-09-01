@@ -8,7 +8,9 @@ describe("Promises/A+ Tests", function () {
 describe('Promise', function () {
   describe('Promise._setImmediateFn', function () {
     afterEach(function() {
-      Promise._setImmediateFn((typeof setImmediate === 'function' && setImmediate) ||
+      Promise._setImmediateFn((typeof setImmediate === 'function' && function (fn) {
+            setImmediate(fn);
+          }) ||
       function (fn) {
         setTimeout(fn, 1);
       });
