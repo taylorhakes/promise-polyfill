@@ -34,6 +34,16 @@ bower install promise-polyfill
 
 ## Simple use
 ```js
+import Promise from 'promise-polyfill'; 
+
+// To add to window
+if (!window.Promise) {
+  window.Promise = Promise;
+}
+```
+
+then you can use like normal Promises
+```js
 var prom = new Promise(function(resolve, reject) {
   // do a thing, possibly async, then…
 
