@@ -226,6 +226,10 @@
   
   if (typeof module !== 'undefined' && module.exports) {
     module.exports = Promise;
+  } else if (typeof root.define === 'function' && root.define.amd) {
+      root.define(function() {
+        return root.Promise ? root.Promise : Promise;
+      });
   } else if (!root.Promise) {
     root.Promise = Promise;
   }
