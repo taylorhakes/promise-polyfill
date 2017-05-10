@@ -130,6 +130,22 @@
     return this.then(null, onRejected);
   };
 
+  Promise.prototype['finally'] = function (onAny) {
+    var constructor = this.constructor;
+    return this.then(
+      function (value) {
+        return constructor.resolve(onAny()).then(function () {
+          return value;
+        });
+      },
+      function (reason) {
+        return constructor.resolve(onAny()).then(function () {
+          throw reason;
+        });
+      }
+    );
+  };
+
   Promise.prototype.then = function (onFulfilled, onRejected) {
     var prom = new (this.constructor)(noop);
 
