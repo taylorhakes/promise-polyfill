@@ -9,7 +9,7 @@ Lightweight ES6 Promise polyfill for the browser and node. Adheres closely to th
 
 For API information about Promises, please check out this article [HTML5Rocks article](http://www.html5rocks.com/en/tutorials/es6/promises/).
 
-It is extremely lightweight. ***< 1kb Gzipped***
+It is extremely lightweight. ***< 2kb Gzipped***
 
 ## Browser Support
 IE8+, Chrome, Firefox, IOS 4+, Safari 5+, Opera
