@@ -1,0 +1,1 @@
+if (!window.Promise) window.Promise = require('.').default || require('.');
