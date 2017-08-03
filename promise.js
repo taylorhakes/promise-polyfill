@@ -5,7 +5,7 @@
   var setTimeoutFunc = setTimeout;
 
   function noop() {}
-  
+
   // Polyfill for Function.prototype.bind
   function bind(fn, thisArg) {
     return function () {
@@ -14,14 +14,22 @@
   }
 
   function Promise(fn) {
-    if (typeof this !== 'object') throw new TypeError('Promises must be constructed via new');
-    if (typeof fn !== 'function') throw new TypeError('not a function');
-    this._state = 0;
-    this._handled = false;
-    this._value = undefined;
-    this._deferreds = [];
+    try {
+      if (typeof this !== 'object') throw new TypeError('Promises must be constructed via new');
+      if (typeof fn !== 'function') throw new TypeError('not a function');
+      this._state = 0;
+      this._handled = false;
+      this._value = undefined;
+      this._deferreds = [];
 
-    doResolve(fn, this);
+      doResolve(fn, this);
+    }
+    catch(error) {
+      if (typeof console !== 'undefined' && console) {
+        console.warn(error); // eslint-disable-line no-console
+      }
+    }
+
   }
 
   function handle(self, deferred) {
@@ -223,7 +231,7 @@
   Promise._setUnhandledRejectionFn = function _setUnhandledRejectionFn(fn) {
     Promise._unhandledRejectionFn = fn;
   };
-  
+
   if (typeof module !== 'undefined' && module.exports) {
     module.exports = Promise;
   } else if (!root.Promise) {
