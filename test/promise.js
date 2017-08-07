@@ -187,4 +187,62 @@ describe('Promise', function () {
       assert(prom instanceof SubClass);
     });
   });
+  describe('Promise.all', function() {
+    it('throws on implicit undefined', function () {
+      return Promise.all().then(function () {
+        assert.fail();
+      }, function (error) {
+        assert.ok(error instanceof Error);
+      });
+    });
+    it('throws on explicit undefined', function () {
+      return Promise.all(undefined).then(function () {
+        assert.fail();
+      }, function (error) {
+        assert.ok(error instanceof Error);
+      });
+    });
+    it('throws on null', function () {
+      return Promise.all(null).then(function () {
+        assert.fail();
+      }, function (error) {
+        assert.ok(error instanceof Error);
+      });
+    });
+    it('throws on 0', function () {
+      return Promise.all(0).then(function () {
+        assert.fail();
+      }, function (error) {
+        assert.ok(error instanceof Error);
+      });
+    });
+    it('throws on false', function () {
+      return Promise.all(false).then(function () {
+        assert.fail();
+      }, function (error) {
+        assert.ok(error instanceof Error);
+      });
+    });
+    it('throws on a number', function () {
+      return Promise.all().then(function () {
+        assert.fail(20);
+      }, function (error) {
+        assert.ok(error instanceof Error);
+      });
+    });
+    it('throws on a boolean', function () {
+      return Promise.all(true).then(function () {
+        assert.fail();
+      }, function (error) {
+        assert.ok(error instanceof Error);
+      });
+    });
+    it('throws on an object', function () {
+      return Promise.all({ test: 'object' }).then(function () {
+        assert.fail();
+      }, function (error) {
+        assert.ok(error instanceof Error);
+      });
+    });
+  });
 }); 
