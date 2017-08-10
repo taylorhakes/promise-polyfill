@@ -4,8 +4,10 @@
   "description": "Lightweight promise polyfill. A+ compliant",
   "main": "promise.js",
   "scripts": {
+    "check:bundlesize": "npm run bundlesize",
     "test": "eslint promise.js && mocha && karma start --single-run",
-    "build": "uglifyjs --compress --support-ie8 --mangle -o promise.min.js -- promise.js "
+    "build": "uglifyjs --compress --support-ie8 --mangle -o promise.min.js -- promise.js ",
+    "precommit": "npm run build && git add promise.min.js"
   },
   "repository": {
     "type": "git",
@@ -18,7 +20,9 @@
   },
   "homepage": "https://github.com/taylorhakes/promise-polyfill",
   "devDependencies": {
+    "bundlesize": "^0.13.2",
     "eslint": "^2.4.0",
+    "husky": "^0.14.3",
     "karma": "^0.13.19",
     "karma-browserify": "^4.4.2",
     "karma-chrome-launcher": "^0.2.2",
@@ -34,5 +38,11 @@
     "ES6",
     "promises-aplus"
   ],
-  "dependencies": {}
+  "dependencies": {},
+  "bundlesize": [
+    {
+      "path": "promise.min.js",
+      "maxSize": "1 Kb"
+    }
+  ]
 }
