@@ -1,4 +1,8 @@
 # Changelog
+## 6.1.0
+- Bug fix for non-array values in `Promise.all()`
+- Small optimization checking for making sure `Promise` is called with `new`
+
 
 ## 6.0.0 Deprecated `Promise._setImmediateFn` and `Promise._setUnhandledRejectionFn`
 This allows subclassing Promise without rewriting functions
