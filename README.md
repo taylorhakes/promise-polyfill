@@ -79,8 +79,13 @@ Promise._immediateFn = setAsap;
 ```
 
 ## Unhandled Rejections
-promise-polyfill will warn you about possibly unhandled rejections. It will show a console warning if a Promise is rejected, but no `.catch` is used. You can turn off this behavior by setting `Promise._unhandledRejectionFn = <rejectErrorHandler>`.
-If you would like to disable unhandled rejections. Use a noop like below.
+promise-polyfill will warn you about possibly unhandled rejections. It will show a console warning if a Promise is rejected, but no `.catch` is used. You can change this behavior by doing.
+```js
+Promise._unhandledRejectionFn = <your reject error handler>;
+```
+
+
+If you would like to disable unhandled rejection messages. Use a noop like below.
 ```js
 Promise._unhandledRejectionFn = function(rejectError) {};
 ```
