@@ -22,6 +22,10 @@ npm install promise-polyfill --save-exact
 ```
 bower install promise-polyfill
 ```
+### CDN Use
+```
+<script href="https://cdn.jsdelivr.net/npm/promise-polyfill@6/promise.min.js"></script>
+```
 
 ## Downloads
 
