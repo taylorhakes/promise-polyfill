@@ -1,38 +1,40 @@
-var Promise = require('../promise');
+var Promise = require('../lib');
 var sinon = require('sinon');
 var assert = require('assert');
 var adapter = require('./adapter');
-describe("Promises/A+ Tests", function () {
-  require("promises-aplus-tests").mocha(adapter);
+describe('Promises/A+ Tests', function() {
+  require('promises-aplus-tests').mocha(adapter);
 });
-describe('Promise', function () {
-  describe('Promise._setImmediateFn', function () {
+describe('Promise', function() {
+  describe('Promise._immediateFn', function() {
     afterEach(function() {
-      Promise._setImmediateFn((typeof setImmediate === 'function' && function (fn) {
+      Promise._immediateFn =
+        (typeof setImmediate === 'function' &&
+          function(fn) {
             setImmediate(fn);
           }) ||
-      function (fn) {
-        setTimeout(fn, 1);
-      });
+        function(fn) {
+          setTimeout(fn, 1);
+        };
     });
-    it('changes immediate fn', function () {
+    it('changes immediate fn', function() {
       var spy = sinon.spy();
 
       function immediateFn(fn) {
         spy();
         fn();
       }
-      Promise._setImmediateFn(immediateFn);
+      Promise._immediateFn = immediateFn;
       var done = false;
-      new Promise(function (resolve) {
+      new Promise(function(resolve) {
         resolve();
-      }).then(function () {
+      }).then(function() {
         done = true;
       });
       assert(spy.calledOnce);
       assert(done);
     });
-    it('changes immediate fn multiple', function () {
+    it('changes immediate fn multiple', function() {
       var spy1 = sinon.spy();
 
       function immediateFn1(fn) {
@@ -47,16 +49,15 @@ describe('Promise', function () {
         fn();
       }
 
-      Promise._setImmediateFn(immediateFn1);
+      Promise._immediateFn = immediateFn1;
       var done = false;
-      new Promise(function (resolve) {
+      new Promise(function(resolve) {
         resolve();
-      }).then(function () {
-      });
-      Promise._setImmediateFn(immediateFn2);
-      new Promise(function (resolve) {
+      }).then(function() {});
+      Promise._immediateFn = immediateFn2;
+      new Promise(function(resolve) {
         resolve();
-      }).then(function () {
+      }).then(function() {
         done = true;
       });
       assert(spy2.called);
@@ -64,7 +65,7 @@ describe('Promise', function () {
       assert(done);
     });
   });
-  describe('Promise._onUnhandledRejection', function () {
+  describe('Promise._onUnhandledRejection', function() {
     var stub, sandbox;
     beforeEach(function() {
       sandbox = sinon.sandbox.create();
@@ -73,30 +74,32 @@ describe('Promise', function () {
     afterEach(function() {
       sandbox.restore();
     });
-    it('no error on resolve', function (done) {
-      Promise.resolve(true).then(function(result) {
-        return result;
-      }).then(function(result) {
-        return result;
-      });
+    it('no error on resolve', function(done) {
+      Promise.resolve(true)
+        .then(function(result) {
+          return result;
+        })
+        .then(function(result) {
+          return result;
+        });
 
       setTimeout(function() {
         assert(!stub.called);
         done();
       }, 50);
     });
-    it('error single Promise', function (done) {
-      new Promise(function(resolve, reject) {
-        abc.abc = 1;
+    it('error single Promise', function(done) {
+      new Promise(function() {
+        throw new Error('err');
       });
       setTimeout(function() {
         assert(stub.calledOnce);
         done();
       }, 50);
     });
-    it('multi promise error', function (done) {
-      new Promise(function(resolve, reject) {
-        abc.abc = 1;
+    it('multi promise error', function(done) {
+      new Promise(function() {
+        throw new Error('err');
       }).then(function(result) {
         return result;
       });
@@ -105,9 +108,9 @@ describe('Promise', function () {
         done();
       }, 50);
     });
-    it('promise catch no error', function (done) {
-      new Promise(function(resolve, reject) {
-        abc.abc = 1;
+    it('promise catch no error', function(done) {
+      new Promise(function() {
+        throw new Error('err');
       }).catch(function(result) {
         return result;
       });
@@ -116,37 +119,37 @@ describe('Promise', function () {
         done();
       }, 50);
     });
-    it('promise catch no error', function (done) {
-      new Promise(function(resolve, reject) {
-        abc.abc = 1;
-      }).then(function(result) {
-        return result;
-      }).catch(function(result) {
-        return result;
-      });
+    it('promise catch no error', function(done) {
+      new Promise(function() {
+        throw new Error('err');
+      })
+        .then(function(result) {
+          return result;
+        })
+        .catch(function(result) {
+          return result;
+        });
       setTimeout(function() {
         assert(!stub.called);
         done();
       }, 50);
     });
-    it('promise reject error', function (done) {
+    it('promise reject error', function(done) {
       Promise.reject('hello');
       setTimeout(function() {
         assert(stub.calledOnce);
         done();
       }, 50);
     });
-    it('promise reject error late', function (done) {
+    it('promise reject error late', function(done) {
       var prom = Promise.reject('hello');
-      prom.catch(function() {
-
-      });
+      prom.catch(function() {});
       setTimeout(function() {
         assert(!stub.called);
         done();
       }, 50);
     });
-    it('promise reject error late', function (done) {
+    it('promise reject error late', function(done) {
       Promise.reject('hello');
       setTimeout(function() {
         assert.equal(stub.args[0][1], 'hello');
@@ -155,8 +158,7 @@ describe('Promise', function () {
     });
   });
   describe('Promise.prototype.then', function() {
-    var spy,
-        SubClass;
+    var spy, SubClass;
     beforeEach(function() {
       spy = sinon.spy();
       SubClass = function() {
@@ -164,7 +166,9 @@ describe('Promise', function () {
         Promise.apply(this, arguments);
       };
 
-      function __() { this.constructor = SubClass; }
+      function __() {
+        this.constructor = SubClass;
+      }
       __.prototype = Promise.prototype;
       SubClass.prototype = new __();
 
@@ -188,61 +192,85 @@ describe('Promise', function () {
     });
   });
   describe('Promise.all', function() {
-    it('throws on implicit undefined', function () {
-      return Promise.all().then(function () {
-        assert.fail();
-      }, function (error) {
-        assert.ok(error instanceof Error);
-      });
+    it('throws on implicit undefined', function() {
+      return Promise.all().then(
+        function() {
+          assert.fail();
+        },
+        function(error) {
+          assert.ok(error instanceof Error);
+        }
+      );
     });
-    it('throws on explicit undefined', function () {
-      return Promise.all(undefined).then(function () {
-        assert.fail();
-      }, function (error) {
-        assert.ok(error instanceof Error);
-      });
+    it('throws on explicit undefined', function() {
+      return Promise.all(undefined).then(
+        function() {
+          assert.fail();
+        },
+        function(error) {
+          assert.ok(error instanceof Error);
+        }
+      );
     });
-    it('throws on null', function () {
-      return Promise.all(null).then(function () {
-        assert.fail();
-      }, function (error) {
-        assert.ok(error instanceof Error);
-      });
+    it('throws on null', function() {
+      return Promise.all(null).then(
+        function() {
+          assert.fail();
+        },
+        function(error) {
+          assert.ok(error instanceof Error);
+        }
+      );
     });
-    it('throws on 0', function () {
-      return Promise.all(0).then(function () {
-        assert.fail();
-      }, function (error) {
-        assert.ok(error instanceof Error);
-      });
+    it('throws on 0', function() {
+      return Promise.all(0).then(
+        function() {
+          assert.fail();
+        },
+        function(error) {
+          assert.ok(error instanceof Error);
+        }
+      );
     });
-    it('throws on false', function () {
-      return Promise.all(false).then(function () {
-        assert.fail();
-      }, function (error) {
-        assert.ok(error instanceof Error);
-      });
+    it('throws on false', function() {
+      return Promise.all(false).then(
+        function() {
+          assert.fail();
+        },
+        function(error) {
+          assert.ok(error instanceof Error);
+        }
+      );
     });
-    it('throws on a number', function () {
-      return Promise.all().then(function () {
-        assert.fail(20);
-      }, function (error) {
-        assert.ok(error instanceof Error);
-      });
+    it('throws on a number', function() {
+      return Promise.all().then(
+        function() {
+          assert.fail(20);
+        },
+        function(error) {
+          assert.ok(error instanceof Error);
+        }
+      );
     });
-    it('throws on a boolean', function () {
-      return Promise.all(true).then(function () {
-        assert.fail();
-      }, function (error) {
-        assert.ok(error instanceof Error);
-      });
+    it('throws on a boolean', function() {
+      return Promise.all(true).then(
+        function() {
+          assert.fail();
+        },
+        function(error) {
+          assert.ok(error instanceof Error);
+        }
+      );
     });
-    it('throws on an object', function () {
-      return Promise.all({ test: 'object' }).then(function () {
-        assert.fail();
-      }, function (error) {
-        assert.ok(error instanceof Error);
-      });
+    it('throws on an object', function() {
+      return Promise.all({ test: 'object' }).then(
+        function() {
+          assert.fail();
+        },
+        function(error) {
+          assert.ok(error instanceof Error);
+        }
+      );
     });
   });
-}); 
+});

@@ -1,0 +1,11 @@
+{
+  "{src,test}/**/*.js": [
+    "prettier --single-quote --write",
+    "eslint --fix",
+    "git add"
+  ],
+  "*.md": [
+    "prettier --single-quote --write",
+    "git add"
+  ]
+}
