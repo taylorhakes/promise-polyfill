@@ -2,10 +2,25 @@
   "name": "promise-polyfill",
   "version": "6.1.0",
   "description": "Lightweight promise polyfill. A+ compliant",
-  "main": "promise.js",
+  "main": "lib/index.js",
+  "module": "src/index.js",
+  "unpkg": "dist/promise.min.js",
+  "files": [
+    "src",
+    "lib",
+    "dist"
+  ],
   "scripts": {
-    "test": "eslint promise.js && mocha && karma start --single-run",
-    "build": "uglifyjs --compress --support-ie8 --mangle -o promise.min.js -- promise.js "
+    "precommit": "lint-staged",
+    "pretest": "npm run build:cjs",
+    "test": "eslint src && mocha && karma start --single-run",
+    "prebuild": "rimraf lib dist",
+    "build": "run-p build:**",
+    "build:cjs": "rollup -i src/index.js -o lib/index.js -f cjs",
+    "build:umd": "cross-env NODE_ENV=development rollup -i src/index.js -o dist/promise.js -c rollup.umd.config.js",
+    "build:umd:min": "cross-env NODE_ENV=production rollup -i src/index.js -o dist/promise.min.js -c rollup.umd.config.js",
+    "prepublish": "test $(npm -v | tr . '\\n' | head -n 1) -ge '4' || exit 1",
+    "prepare": "npm run build"
   },
   "repository": {
     "type": "git",
@@ -18,15 +33,22 @@
   },
   "homepage": "https://github.com/taylorhakes/promise-polyfill",
   "devDependencies": {
-    "eslint": "^2.4.0",
+    "cross-env": "^5.1.1",
+    "eslint": "^4.11.0",
+    "husky": "^0.14.3",
     "karma": "^0.13.19",
     "karma-browserify": "^4.4.2",
     "karma-chrome-launcher": "^0.2.2",
     "karma-mocha": "^0.2.1",
+    "lint-staged": "^5.0.0",
     "mocha": "^2.3.4",
+    "npm-run-all": "^4.1.2",
+    "prettier": "^1.8.2",
     "promises-aplus-tests": "*",
-    "sinon": "^1.17.2",
-    "uglify-js": "^2.6.2"
+    "rimraf": "^2.6.2",
+    "rollup": "^0.52.0",
+    "rollup-plugin-uglify": "^2.0.1",
+    "sinon": "^1.17.2"
   },
   "keywords": [
     "promise",
