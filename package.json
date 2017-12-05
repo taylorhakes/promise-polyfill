@@ -1,6 +1,6 @@
 {
   "name": "promise-polyfill",
-  "version": "6.1.0",
+  "version": "7.0.0",
   "description": "Lightweight promise polyfill. A+ compliant",
   "main": "lib/index.js",
   "module": "src/index.js",
@@ -19,6 +19,9 @@
     "build:cjs": "rollup -i src/index.js -o lib/index.js -f cjs",
     "build:umd": "cross-env NODE_ENV=development rollup -i src/index.js -o dist/promise.js -c rollup.umd.config.js",
     "build:umd:min": "cross-env NODE_ENV=production rollup -i src/index.js -o dist/promise.min.js -c rollup.umd.config.js",
+    "build:cjs-polyfill": "rollup -i src/polyfill.js -o lib/polyfill.js -f cjs",
+    "build:umd-polyfill": "cross-env NODE_ENV=development rollup -i src/polyfill.js -o dist/polyfill.js -c rollup.umd.config.js",
+    "build:umd-polyfill:min": "cross-env NODE_ENV=production rollup -i src/polyfill.js -o dist/polyfill.min.js -c rollup.umd.config.js",
     "prepublish": "test $(npm -v | tr . '\\n' | head -n 1) -ge '4' || exit 1",
     "prepare": "npm run build"
   },
