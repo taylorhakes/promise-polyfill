@@ -45,11 +45,6 @@ bower install promise-polyfill
 
 ```js
 import Promise from 'promise-polyfill';
-
-// To add to window
-if (!window.Promise) {
-  window.Promise = Promise;
-}
 ```
 
 then you can use like normal Promises
@@ -68,6 +63,12 @@ var prom = new Promise(function(resolve, reject) {
 prom.then(function(result) {
   // Do something when async done
 });
+```
+
+If you would like to just polyfill, only if native doesn't exist.
+
+```js
+import 'promise-polyfill/src/polyfill';
 ```
 
 ## Performance
