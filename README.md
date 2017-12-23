@@ -30,10 +30,10 @@ npm install promise-polyfill --save-exact
 bower install promise-polyfill
 ```
 
-### CDN Use
+### CDN Polyfill Use
 
 ```
-<script href="https://cdn.jsdelivr.net/npm/promise-polyfill@6/dist/promise.min.js"></script>
+<script href="https://cdn.jsdelivr.net/npm/promise-polyfill@7/dist/polyfill.min.js"></script>
 ```
 
 ## Downloads
@@ -79,8 +79,7 @@ issues. Use a `setImmediate` polyfill to fix this issue.
 [setAsap](https://github.com/taylorhakes/setAsap) or
 [setImmediate](https://github.com/YuzuJS/setImmediate) work well.
 
-If you polyfill `window.setImmediate` or use `Promise._immediateFn =
-yourImmediateFn` it will be used instead of `window.setTimeout`
+If you polyfill `window.setImmediate` or use `Promise._immediateFn = yourImmediateFn` it will be used instead of `window.setTimeout`
 
 ```
 npm install setasap --save
