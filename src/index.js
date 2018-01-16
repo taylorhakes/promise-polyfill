@@ -133,7 +133,7 @@ function Promise(fn) {
 }
 
 var _proto = Promise.prototype;
-_proto.catch = function(onRejected) {
+_proto['catch'] = function(onRejected) {
   return this.then(null, onRejected);
 };
 
