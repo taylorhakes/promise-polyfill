@@ -1,5 +1,10 @@
 # Changelog
 
+### 7.0.1
+
+* Fixed a bug in 'catch' keyword in IE8
+* Fixed import error when using `require`
+
 ## 7.0.0
 
 * Updated code to ES6 module definitions (thanks Andarist)
