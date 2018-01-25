@@ -87,8 +87,8 @@ npm install setasap --save
 ```
 
 ```js
-var Promise = require('promise-polyfill');
-var setAsap = require('setasap');
+import Promise from 'promise-polyfill/src/polyfill';
+import setAsap from 'setasap';
 Promise._immediateFn = setAsap;
 ```
 
