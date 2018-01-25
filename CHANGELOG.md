@@ -1,5 +1,9 @@
 # Changelog
 
+### 7.0.2
+
+* Added IE8 compatability back to minify
+
 ### 7.0.1
 
 * Fixed a bug in 'catch' keyword in IE8

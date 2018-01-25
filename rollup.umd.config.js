@@ -16,7 +16,14 @@ if (process.env.NODE_ENV === 'production') {
         unsafe: true,
         unsafe_comps: true,
         warnings: false,
+        ie8: true
       },
+      mangle: {
+        ie8: true
+      },
+      output: {
+        ie8: true
+      }
     })
   );
 }
