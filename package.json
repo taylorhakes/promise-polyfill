@@ -3,6 +3,7 @@
   "version": "7.0.2",
   "description": "Lightweight promise polyfill. A+ compliant",
   "main": "lib/index.js",
+  "module": "src/index.js",
   "jsnext:main": "src/index.js",
   "unpkg": "dist/promise.min.js",
   "files": [
