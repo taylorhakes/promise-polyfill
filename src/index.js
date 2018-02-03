@@ -143,6 +143,13 @@ Promise.prototype.then = function(onFulfilled, onRejected) {
   return prom;
 };
 
+Promise.prototype.finally = function(onAny) {
+  var onFinally = function() {
+    return onAny();
+  };
+  return this.then(onFinally, onFinally);
+};
+
 Promise.all = function(arr) {
   return new Promise(function(resolve, reject) {
     if (!arr || typeof arr.length === 'undefined')
