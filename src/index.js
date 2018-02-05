@@ -153,7 +153,7 @@ Promise.prototype.finally = function(callback) {
     return constructor.resolve(callback()).then(function() {
       return constructor.reject(reason);
     });
-  }
+  });
 }
 
 Promise.all = function(arr) {
