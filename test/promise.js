@@ -191,6 +191,62 @@ describe('Promise', function() {
       assert(prom instanceof SubClass);
     });
   });
+  describe('Promise.prototype.finally', function() {
+    it('should be called', function(done) {
+      var called = false;
+      Promise.resolve().finally(function() {
+        called = true;
+      });
+      setTimeout(function() {
+        assert(called, 'Finally handler was called');
+        done();
+      }, 50);
+    });
+
+    it('should be called on success', function(done) {
+      Promise.resolve(3).finally(function() {
+        assert(true, 'Finally handler was called');
+        done();
+      });
+    });
+
+    it('should be called on failure', function(done) {
+      Promise.reject(new Error()).finally(function() {
+        assert(true, 'Finally handler was called');
+        done();
+      });
+    });
+
+    it('should not affect the result', function(done) {
+      Promise.resolve(3)
+        .finally(function() {
+          return 'dummy';
+        })
+        .then(function(result) {
+          assert.equal(result, 3, 'Result was the resolved result');
+          return Promise.reject(new Error('test'));
+        })
+        .finally(function() {
+          return 'dummy';
+        })
+        .catch(function(reason) {
+          assert(!!reason, 'There was a reason');
+          assert.equal(reason.message, 'test', 'We catched the correct error');
+        })
+        .finally(done);
+    });
+
+    it('should reject with the handler error if handler throws', function(done) {
+      Promise.reject(new Error('test2'))
+        .finally(function() {
+          throw new Error('test3');
+        })
+        .catch(function(reason) {
+          assert.equal(reason.message, 'test3', 'The handler error was caught');
+        })
+        .finally(done);
+    });
+  });
   describe('Promise.all', function() {
     it('throws on implicit undefined', function() {
       return Promise.all().then(
