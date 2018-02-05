@@ -145,16 +145,19 @@ Promise.prototype.then = function(onFulfilled, onRejected) {
 
 Promise.prototype.finally = function(callback) {
   var constructor = this.constructor;
-  return this.then(function (value) {
-    return constructor.resolve(callback()).then(function() {
-		  return value;
-		});
-  }, function (reason) {
-    return constructor.resolve(callback()).then(function() {
-      return constructor.reject(reason);
-    });
-  });
-}
+  return this.then(
+    function(value) {
+      return constructor.resolve(callback()).then(function() {
+        return value;
+      });
+    },
+    function(reason) {
+      return constructor.resolve(callback()).then(function() {
+        return constructor.reject(reason);
+      });
+    }
+  );
+};
 
 Promise.all = function(arr) {
   return new Promise(function(resolve, reject) {
