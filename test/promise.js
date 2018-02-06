@@ -192,27 +192,16 @@ describe('Promise', function() {
     });
   });
   describe('Promise.prototype.finally', function() {
-    it('should be called', function(done) {
-      var called = false;
-      Promise.resolve().finally(function() {
-        called = true;
-      });
-      setTimeout(function() {
-        assert(called, 'Finally handler was called');
-        done();
-      }, 50);
-    });
-
     it('should be called on success', function(done) {
       Promise.resolve(3).finally(function() {
-        assert(true, 'Finally handler was called');
+        assert.equal(arguments.length, 0, 'No arguments to onFinally');
         done();
       });
     });
 
     it('should be called on failure', function(done) {
       Promise.reject(new Error()).finally(function() {
-        assert(true, 'Finally handler was called');
+        assert.equal(arguments.length, 0, 'No arguments to onFinally');
         done();
       });
     });
@@ -246,7 +235,32 @@ describe('Promise', function() {
         })
         .finally(done);
     });
+
+    it('should await any promise returned from the callback', function(done) {
+      var log = [];
+      Promise.resolve()
+        .then(function() {
+          log.push(1);
+        })
+        .finally(function() {
+          return Promise.resolve()
+            .then(function() {
+              log.push(2);
+            })
+            .then(function() {
+              log.push(3);
+            });
+        })
+        .then(function() {
+          log(4);
+        })
+        .then(function() {
+          assert.deepEqual(log, [1, 2, 3, 4], 'Correct order of promise chain');
+        })
+        .finally(done);
+    });
   });
+
   describe('Promise.all', function() {
     it('throws on implicit undefined', function() {
       return Promise.all().then(
