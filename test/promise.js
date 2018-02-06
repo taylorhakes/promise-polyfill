@@ -252,10 +252,13 @@ describe('Promise', function() {
             });
         })
         .then(function() {
-          log(4);
+          log.push('4');
         })
         .then(function() {
           assert.deepEqual(log, [1, 2, 3, 4], 'Correct order of promise chain');
+        })
+        .catch(function(err) {
+          assert(false, err);
         })
         .finally(done);
     });
