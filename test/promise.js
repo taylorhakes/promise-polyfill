@@ -252,7 +252,7 @@ describe('Promise', function() {
             });
         })
         .then(function() {
-          log.push('4');
+          log.push(4);
         })
         .then(function() {
           assert.deepEqual(log, [1, 2, 3, 4], 'Correct order of promise chain');
