@@ -191,6 +191,79 @@ describe('Promise', function() {
       assert(prom instanceof SubClass);
     });
   });
+  describe('Promise.prototype.finally', function() {
+    it('should be called on success', function(done) {
+      Promise.resolve(3).finally(function() {
+        assert.equal(arguments.length, 0, 'No arguments to onFinally');
+        done();
+      });
+    });
+
+    it('should be called on failure', function(done) {
+      Promise.reject(new Error()).finally(function() {
+        assert.equal(arguments.length, 0, 'No arguments to onFinally');
+        done();
+      });
+    });
+
+    it('should not affect the result', function(done) {
+      Promise.resolve(3)
+        .finally(function() {
+          return 'dummy';
+        })
+        .then(function(result) {
+          assert.equal(result, 3, 'Result was the resolved result');
+          return Promise.reject(new Error('test'));
+        })
+        .finally(function() {
+          return 'dummy';
+        })
+        .catch(function(reason) {
+          assert(!!reason, 'There was a reason');
+          assert.equal(reason.message, 'test', 'We catched the correct error');
+        })
+        .finally(done);
+    });
+
+    it('should reject with the handler error if handler throws', function(done) {
+      Promise.reject(new Error('test2'))
+        .finally(function() {
+          throw new Error('test3');
+        })
+        .catch(function(reason) {
+          assert.equal(reason.message, 'test3', 'The handler error was caught');
+        })
+        .finally(done);
+    });
+
+    it('should await any promise returned from the callback', function(done) {
+      var log = [];
+      Promise.resolve()
+        .then(function() {
+          log.push(1);
+        })
+        .finally(function() {
+          return Promise.resolve()
+            .then(function() {
+              log.push(2);
+            })
+            .then(function() {
+              log.push(3);
+            });
+        })
+        .then(function() {
+          log.push(4);
+        })
+        .then(function() {
+          assert.deepEqual(log, [1, 2, 3, 4], 'Correct order of promise chain');
+        })
+        .catch(function(err) {
+          assert(false, err);
+        })
+        .finally(done);
+    });
+  });
+
   describe('Promise.all', function() {
     it('throws on implicit undefined', function() {
       return Promise.all().then(
