@@ -1,6 +1,6 @@
 {
   "name": "promise-polyfill",
-  "version": "7.0.2",
+  "version": "7.1.0",
   "description": "Lightweight promise polyfill. A+ compliant",
   "main": "lib/index.js",
   "jsnext:main": "src/index.js",
