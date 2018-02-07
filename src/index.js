@@ -144,9 +144,6 @@ Promise.prototype.then = function(onFulfilled, onRejected) {
 };
 
 Promise.prototype['finally'] = function(callback) {
-  if (typeof callback !== 'function') {
-    return this;
-  }
   var constructor = this.constructor;
   return this.then(
     function(value) {
