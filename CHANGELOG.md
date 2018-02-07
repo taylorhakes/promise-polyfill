@@ -1,5 +1,9 @@
 # Changelog
 
+### 7.1.0
+
+* Added Promise.prototype.finally
+
 ### 7.0.2
 
 * Added IE8 compatability back to minify
