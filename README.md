@@ -33,7 +33,7 @@ bower install promise-polyfill
 ### CDN Polyfill Use
 
 ```html
-<script href="https://cdn.jsdelivr.net/npm/promise-polyfill@7/dist/polyfill.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/promise-polyfill@7/dist/polyfill.min.js"></script>
 ```
 
 ## Downloads
