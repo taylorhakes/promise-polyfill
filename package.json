@@ -1,6 +1,6 @@
 {
   "name": "promise-polyfill",
-  "version": "7.1.0",
+  "version": "7.1.1",
   "description": "Lightweight promise polyfill. A+ compliant",
   "main": "lib/index.js",
   "jsnext:main": "src/index.js",
@@ -27,7 +27,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://taylorhakes@github.com/taylorhakes/promise-polyfill.git"
+    "url": "https://github.com/taylorhakes/promise-polyfill.git"
   },
   "author": "Taylor Hakes",
   "license": "MIT",
