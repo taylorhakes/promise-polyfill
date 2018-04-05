@@ -1,5 +1,9 @@
 # Changelog
 
+### 7.1.2
+
+* Fixed bug in Node JS Promise polyfill
+
 ### 7.1.0
 
 * Added Promise.prototype.finally
