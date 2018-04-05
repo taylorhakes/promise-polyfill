@@ -1,6 +1,6 @@
 import Promise from './index';
 
-var global = (function() {
+var globalNS = (function() {
   // the only reliable means to get the global object is
   // `Function('return this')()`
   // However, this causes CSP violations in Chrome apps.
@@ -16,6 +16,6 @@ var global = (function() {
   throw new Error('unable to locate global object');
 })();
 
-if (!global.Promise) {
-  global.Promise = Promise;
+if (!globalNS.Promise) {
+  globalNS.Promise = Promise;
 }
