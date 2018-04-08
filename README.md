@@ -38,8 +38,8 @@ bower install promise-polyfill
 
 ## Downloads
 
-* [Promise](https://raw.github.com/taylorhakes/promise-polyfill/master/dist/promise.js)
-* [Promise-min](https://raw.github.com/taylorhakes/promise-polyfill/master/dist/promise.min.js)
+* [Promise](https://raw.github.com/taylorhakes/promise-polyfill/master/dist/polyfill.js)
+* [Promise-min](https://raw.github.com/taylorhakes/promise-polyfill/master/dist/polyfill.min.js)
 
 ## Simple use
 
