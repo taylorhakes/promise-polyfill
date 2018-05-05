@@ -191,7 +191,8 @@ describe('Promise', function() {
       assert(prom instanceof SubClass);
     });
   });
-  describe('Promise.prototype.finally', function() {
+
+  function finallyTests(Promise) {
     it('should be called on success', function(done) {
       Promise.resolve(3).finally(function() {
         assert.equal(arguments.length, 0, 'No arguments to onFinally');
@@ -262,6 +263,31 @@ describe('Promise', function() {
         })
         .finally(done);
     });
+  }
+  describe('Promise.prototype.finally', function() {
+    finallyTests(Promise);
+  });
+
+  describe('Promise.prototype.finally polyfill', function() {
+    var NativePromise = (typeof window !== 'undefined' ? window : global)
+      .Promise;
+
+    // Skip tests if Native Promise doesn't exist
+    if (!NativePromise) {
+      return;
+    }
+
+    var originalFinally = null;
+    beforeEach(function() {
+      originalFinally = NativePromise.prototype.finally;
+      NativePromise.prototype.finally = Promise.prototype.finally;
+    });
+    beforeEach(function() {
+      if (originalFinally) {
+        NativePromise.prototype.finally = originalFinally;
+      }
+    });
+    finallyTests(NativePromise);
   });
 
   describe('Promise.all', function() {

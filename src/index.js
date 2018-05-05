@@ -1,3 +1,5 @@
+import promiseFinally from './finally';
+
 // Store setTimeout reference so promise-polyfill will be unaffected by
 // other code modifying setTimeout (like sinon.useFakeTimers())
 var setTimeoutFunc = setTimeout;
@@ -143,21 +145,7 @@ Promise.prototype.then = function(onFulfilled, onRejected) {
   return prom;
 };
 
-Promise.prototype['finally'] = function(callback) {
-  var constructor = this.constructor;
-  return this.then(
-    function(value) {
-      return constructor.resolve(callback()).then(function() {
-        return value;
-      });
-    },
-    function(reason) {
-      return constructor.resolve(callback()).then(function() {
-        return constructor.reject(reason);
-      });
-    }
-  );
-};
+Promise.prototype['finally'] = promiseFinally;
 
 Promise.all = function(arr) {
   return new Promise(function(resolve, reject) {

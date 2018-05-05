@@ -1,5 +1,23 @@
 # Changelog
 
+### 8.0.0
+
+* Polyfill default promise with `finally` if it doesn't exist if you use polyfill.js
+* If using `require` with webpack 2+, you not need to do
+
+```js
+var Promise = require('promise-polyfill').default;
+```
+
+instead of
+
+```js
+var Promise = require('promise-polyfill');
+```
+
+* Removed files /dist/promise.js and /dist/promise.min.js. These files were not used unless you downloaded them directly from the repo. They were not used by ES6 modules, CommonJS or polyfill.js
+  The file lead to issues because they overrode the global Promise by default.
+
 ### 7.1.2
 
 * Fixed bug in Node JS Promise polyfill

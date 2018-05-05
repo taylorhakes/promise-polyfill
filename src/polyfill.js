@@ -1,4 +1,5 @@
 import Promise from './index';
+import promiseFinally from './finally';
 
 var globalNS = (function() {
   // the only reliable means to get the global object is
@@ -18,4 +19,6 @@ var globalNS = (function() {
 
 if (!globalNS.Promise) {
   globalNS.Promise = Promise;
+} else if (!globalNS.Promise.prototype['finally']) {
+  globalNS.Promise.prototype['finally'] = promiseFinally;
 }

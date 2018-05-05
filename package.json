@@ -1,10 +1,11 @@
 {
   "name": "promise-polyfill",
-  "version": "7.1.2",
+  "version": "8.0.0",
   "description": "Lightweight promise polyfill. A+ compliant",
   "main": "lib/index.js",
+  "module": "src/index.js",
   "jsnext:main": "src/index.js",
-  "unpkg": "dist/promise.min.js",
+  "unpkg": "dist/polyfill.min.js",
   "files": [
     "src",
     "lib",
@@ -17,8 +18,6 @@
     "prebuild": "rimraf lib dist",
     "build": "run-p build:**",
     "build:cjs": "rollup -i src/index.js -o lib/index.js -f cjs",
-    "build:umd": "cross-env NODE_ENV=development rollup -i src/index.js -o dist/promise.js -c rollup.umd.config.js",
-    "build:umd:min": "cross-env NODE_ENV=production rollup -i src/index.js -o dist/promise.min.js -c rollup.umd.config.js",
     "build:cjs-polyfill": "rollup -i src/polyfill.js -o lib/polyfill.js -f cjs",
     "build:umd-polyfill": "cross-env NODE_ENV=development rollup -i src/polyfill.js -o dist/polyfill.js -c rollup.umd.config.js",
     "build:umd-polyfill:min": "cross-env NODE_ENV=production rollup -i src/polyfill.js -o dist/polyfill.min.js -c rollup.umd.config.js",
