@@ -4,7 +4,7 @@
 	(factory());
 }(this, (function () { 'use strict';
 
-var promiseFinally = function (callback) {
+var promiseFinally = function(callback) {
   var constructor = this.constructor;
   return this.then(
     function(value) {

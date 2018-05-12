@@ -110,6 +110,8 @@ promise-polyfill will warn you about possibly unhandled rejections. It will show
 a console warning if a Promise is rejected, but no `.catch` is used. You can
 change this behavior by doing.
 
+-**NOTE: This only works on promise-polyfill Promises. Native Promises do not support this function**
+
 ```js
 Promise._unhandledRejectionFn = <your reject error handler>;
 ```
