@@ -49,7 +49,7 @@ If you would like to add a global Promise object (Node or Browser) if native Pro
 Javascript library authors should _NOT_ use this method.
 
 ```js
-import 'promise-polyfill/src/polyfill';
+import 'promise-polyfill/dist/polyfill';
 ```
 
 If you would like to not affect the global environment (sometimes known as a [ponyfill](ponyfill.com)), you can import the base module. This is nice for library authors or people working in environment where you don't want
