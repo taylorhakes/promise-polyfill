@@ -1,6 +1,7 @@
 import Promise from './index';
 import promiseFinally from './finally';
 
+var global;
 var globalNS = (function() {
   // the only reliable means to get the global object is
   // `Function('return this')()`

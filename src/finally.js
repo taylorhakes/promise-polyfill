@@ -1,4 +1,8 @@
-export default function(callback) {
+/**
+ * @constructor
+ * @extends {Promise}
+ */
+function finallyConstructor(callback) {
   var constructor = this.constructor;
   return this.then(
     function(value) {
@@ -13,3 +17,5 @@ export default function(callback) {
     }
   );
 }
+
+export default finallyConstructor;

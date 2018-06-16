@@ -14,7 +14,9 @@
   "scripts": {
     "precommit": "lint-staged",
     "pretest": "npm run build:cjs",
-    "test": "eslint src && mocha && karma start --single-run",
+    "closure": "google-closure-compiler --js=src/*.js --checks_only --module_resolution=node --compilation_level=ADVANCED",
+    "lint": "eslint src && npm run closure",
+    "test": "npm run lint && mocha && karma start --single-run",
     "prebuild": "rimraf lib dist",
     "build": "run-p build:**",
     "build:cjs": "rollup -i src/index.js -o lib/index.js -f cjs",
@@ -37,6 +39,7 @@
   "devDependencies": {
     "cross-env": "^5.1.1",
     "eslint": "^4.11.0",
+    "google-closure-compiler": "^20180610.0.1",
     "husky": "^0.14.3",
     "karma": "^0.13.19",
     "karma-browserify": "^4.4.2",
