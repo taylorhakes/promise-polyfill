@@ -60,7 +60,12 @@ function resolve(self, newValue) {
       newValue &&
       (typeof newValue === 'object' || typeof newValue === 'function')
     ) {
-      var then = newValue.then;
+      var then;
+      try {
+        then = newValue.then;
+      } catch (e) {
+        // newValue is cross origin object
+      }
       if (newValue instanceof Promise) {
         self._state = 3;
         self._value = newValue;
