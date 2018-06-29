@@ -3,7 +3,7 @@
 ### 8.0.0
 
 * Polyfill default promise with `finally` if it doesn't exist if you use polyfill.js
-* If using `require` with webpack 2+, you not need to do
+* If using `require` with webpack 2+, you now need to do
 
 ```js
 var Promise = require('promise-polyfill').default;
