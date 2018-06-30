@@ -1,6 +1,5 @@
 /**
- * @constructor
- * @extends {Promise}
+ * @this {Promise}
  */
 function finallyConstructor(callback) {
   var constructor = this.constructor;

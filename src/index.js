@@ -15,6 +15,7 @@ function bind(fn, thisArg) {
 
 /**
  * @constructor
+ * @param {Function} fn
  */
 function Promise(fn) {
   if (!(this instanceof Promise))
@@ -149,6 +150,7 @@ Promise.prototype['catch'] = function(onRejected) {
 };
 
 Promise.prototype.then = function(onFulfilled, onRejected) {
+  // @ts-ignore
   var prom = new this.constructor(noop);
 
   handle(this, new Handler(onFulfilled, onRejected, prom));

@@ -5,8 +5,7 @@
 }(this, (function () { 'use strict';
 
 /**
- * @constructor
- * @extends {Promise}
+ * @this {Promise}
  */
 function finallyConstructor(callback) {
   var constructor = this.constructor;
@@ -39,6 +38,7 @@ function bind(fn, thisArg) {
 
 /**
  * @constructor
+ * @param {Function} fn
  */
 function Promise(fn) {
   if (!(this instanceof Promise))
@@ -173,6 +173,7 @@ Promise.prototype['catch'] = function(onRejected) {
 };
 
 Promise.prototype.then = function(onFulfilled, onRejected) {
+  // @ts-ignore
   var prom = new this.constructor(noop);
 
   handle(this, new Handler(onFulfilled, onRejected, prom));
@@ -259,7 +260,7 @@ Promise._unhandledRejectionFn = function _unhandledRejectionFn(err) {
   }
 };
 
-var global;
+/** @suppress {undefinedVars} */
 var globalNS = (function() {
   // the only reliable means to get the global object is
   // `Function('return this')()`
@@ -276,8 +277,8 @@ var globalNS = (function() {
   throw new Error('unable to locate global object');
 })();
 
-if (!globalNS.Promise) {
-  globalNS.Promise = Promise;
+if (!('Promise' in globalNS)) {
+  globalNS['Promise'] = Promise;
 } else if (!globalNS.Promise.prototype['finally']) {
   globalNS.Promise.prototype['finally'] = finallyConstructor;
 }

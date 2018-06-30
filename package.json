@@ -15,7 +15,8 @@
     "precommit": "lint-staged",
     "pretest": "npm run build:cjs",
     "closure": "google-closure-compiler --js=src/*.js --checks_only --module_resolution=node --compilation_level=ADVANCED",
-    "lint": "eslint src && npm run closure",
+    "typescript": "tsc --checkJS --allowJS --noEmit src/**",
+    "lint": "eslint src && npm run closure && npm run typescript",
     "test": "npm run lint && mocha && karma start --single-run",
     "prebuild": "rimraf lib dist",
     "build": "run-p build:**",
@@ -53,7 +54,8 @@
     "rimraf": "^2.6.2",
     "rollup": "^0.52.0",
     "rollup-plugin-uglify": "^2.0.1",
-    "sinon": "^1.17.2"
+    "sinon": "^1.17.2",
+    "typescript": "^2.9.2"
   },
   "keywords": [
     "promise",
