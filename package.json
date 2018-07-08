@@ -15,7 +15,7 @@
     "precommit": "lint-staged",
     "pretest": "npm run build:cjs",
     "closure": "google-closure-compiler --js=src/*.js --checks_only --module_resolution=node --compilation_level=ADVANCED",
-    "typescript": "tsc --checkJS --allowJS --noEmit src/**",
+    "typescript": "tsc --version && tsc --checkJS --allowJS --noEmit src/**.js",
     "lint": "eslint src && npm run closure && npm run typescript",
     "test": "npm run lint && mocha && karma start --single-run",
     "prebuild": "rimraf lib dist",
