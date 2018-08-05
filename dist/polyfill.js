@@ -4,7 +4,10 @@
 	(factory());
 }(this, (function () { 'use strict';
 
-var promiseFinally = function(callback) {
+/**
+ * @this {Promise}
+ */
+function finallyConstructor(callback) {
   var constructor = this.constructor;
   return this.then(
     function(value) {
@@ -18,7 +21,7 @@ var promiseFinally = function(callback) {
       });
     }
   );
-};
+}
 
 // Store setTimeout reference so promise-polyfill will be unaffected by
 // other code modifying setTimeout (like sinon.useFakeTimers())
@@ -33,13 +36,21 @@ function bind(fn, thisArg) {
   };
 }
 
+/**
+ * @constructor
+ * @param {Function} fn
+ */
 function Promise(fn) {
   if (!(this instanceof Promise))
     throw new TypeError('Promises must be constructed via new');
   if (typeof fn !== 'function') throw new TypeError('not a function');
+  /** @type {!number} */
   this._state = 0;
+  /** @type {!boolean} */
   this._handled = false;
+  /** @type {Promise|undefined} */
   this._value = undefined;
+  /** @type {!Array<!Function>} */
   this._deferreds = [];
 
   doResolve(fn, this);
@@ -120,6 +131,9 @@ function finale(self) {
   self._deferreds = null;
 }
 
+/**
+ * @constructor
+ */
 function Handler(onFulfilled, onRejected, promise) {
   this.onFulfilled = typeof onFulfilled === 'function' ? onFulfilled : null;
   this.onRejected = typeof onRejected === 'function' ? onRejected : null;
@@ -159,13 +173,14 @@ Promise.prototype['catch'] = function(onRejected) {
 };
 
 Promise.prototype.then = function(onFulfilled, onRejected) {
+  // @ts-ignore
   var prom = new this.constructor(noop);
 
   handle(this, new Handler(onFulfilled, onRejected, prom));
   return prom;
 };
 
-Promise.prototype['finally'] = promiseFinally;
+Promise.prototype['finally'] = finallyConstructor;
 
 Promise.all = function(arr) {
   return new Promise(function(resolve, reject) {
@@ -245,6 +260,7 @@ Promise._unhandledRejectionFn = function _unhandledRejectionFn(err) {
   }
 };
 
+/** @suppress {undefinedVars} */
 var globalNS = (function() {
   // the only reliable means to get the global object is
   // `Function('return this')()`
@@ -261,10 +277,10 @@ var globalNS = (function() {
   throw new Error('unable to locate global object');
 })();
 
-if (!globalNS.Promise) {
-  globalNS.Promise = Promise;
+if (!('Promise' in globalNS)) {
+  globalNS['Promise'] = Promise;
 } else if (!globalNS.Promise.prototype['finally']) {
-  globalNS.Promise.prototype['finally'] = promiseFinally;
+  globalNS.Promise.prototype['finally'] = finallyConstructor;
 }
 
 })));
