@@ -4,6 +4,13 @@ import promiseFinally from './finally';
 // other code modifying setTimeout (like sinon.useFakeTimers())
 var setTimeoutFunc = setTimeout;
 
+var STATES = {
+  CONSTRUCTING: 0,
+  FULFILLING: 1,
+  REJECTING: 2,
+  PENDING: 3
+};
+
 function noop() {}
 
 // Polyfill for Function.prototype.bind
@@ -22,7 +29,7 @@ function Promise(fn) {
     throw new TypeError('Promises must be constructed via new');
   if (typeof fn !== 'function') throw new TypeError('not a function');
   /** @type {!number} */
-  this._state = 0;
+  this._state = STATES.CONSTRUCTING;
   /** @type {!boolean} */
   this._handled = false;
   /** @type {Promise|undefined} */
@@ -34,18 +41,24 @@ function Promise(fn) {
 }
 
 function handle(self, deferred) {
-  while (self._state === 3) {
+  while (self._state === STATES.PENDING) {
     self = self._value;
   }
-  if (self._state === 0) {
+  if (self._state === STATES.CONSTRUCTING) {
     self._deferreds.push(deferred);
     return;
   }
   self._handled = true;
   Promise._immediateFn(function() {
-    var cb = self._state === 1 ? deferred.onFulfilled : deferred.onRejected;
+    var cb =
+      self._state === STATES.FULFILLING
+        ? deferred.onFulfilled
+        : deferred.onRejected;
     if (cb === null) {
-      (self._state === 1 ? resolve : reject)(deferred.promise, self._value);
+      (self._state === STATES.FULFILLING ? resolve : reject)(
+        deferred.promise,
+        self._value
+      );
       return;
     }
     var ret;
@@ -70,7 +83,7 @@ function resolve(self, newValue) {
     ) {
       var then = newValue.then;
       if (newValue instanceof Promise) {
-        self._state = 3;
+        self._state = STATES.PENDING;
         self._value = newValue;
         finale(self);
         return;
@@ -79,7 +92,7 @@ function resolve(self, newValue) {
         return;
       }
     }
-    self._state = 1;
+    self._state = STATES.FULFILLING;
     self._value = newValue;
     finale(self);
   } catch (e) {
@@ -88,13 +101,13 @@ function resolve(self, newValue) {
 }
 
 function reject(self, newValue) {
-  self._state = 2;
+  self._state = STATES.REJECTING;
   self._value = newValue;
   finale(self);
 }
 
 function finale(self) {
-  if (self._state === 2 && self._deferreds.length === 0) {
+  if (self._state === STATES.REJECTING && self._deferreds.length === 0) {
     Promise._immediateFn(function() {
       if (!self._handled) {
         Promise._unhandledRejectionFn(self._value);
