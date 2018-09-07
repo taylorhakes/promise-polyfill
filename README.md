@@ -6,7 +6,7 @@
 [travis-url]: https://travis-ci.org/taylorhakes/promise-polyfill
 
 Lightweight ES6 Promise polyfill for the browser and node. Adheres closely to
-the spec. It is a perfect polyfill IE, Firefox or any other browser that does
+the spec. It is a perfect polyfill IE or any other browser that does
 not support native promises.
 
 For API information about Promises, please check out this article
