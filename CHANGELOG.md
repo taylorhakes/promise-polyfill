@@ -1,5 +1,9 @@
 # Changelog
 
+### 8.1.0
+
+* Added Closure compiler type definitions
+
 ### 8.0.0
 
 * Polyfill default promise with `finally` if it doesn't exist if you use polyfill.js
