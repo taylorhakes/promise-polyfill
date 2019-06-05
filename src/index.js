@@ -218,6 +218,7 @@ Promise.race = function(values) {
     for (var i = 0, len = values.length; i < len; i++) {
       if (typeof values[i] !== 'object') {
         resolve(values[i]);
+        return;
       }
       
       values[i].then(resolve, reject);
