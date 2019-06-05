@@ -216,6 +216,10 @@ Promise.reject = function(value) {
 Promise.race = function(values) {
   return new Promise(function(resolve, reject) {
     for (var i = 0, len = values.length; i < len; i++) {
+      if (typeof values[i] !== 'object') {
+        resolve(values[i]);
+      }
+      
       values[i].then(resolve, reject);
     }
   });
