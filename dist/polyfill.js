@@ -194,7 +194,7 @@ Promise.all = function(arr) {
     if (!isArray(arr)) {
       return reject(new TypeError('Promise.all accepts an array'));
     }
-      
+
     var args = Array.prototype.slice.call(arr);
     if (args.length === 0) return resolve([]);
     var remaining = args.length;
