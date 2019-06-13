@@ -201,10 +201,12 @@ describe('Promise', function() {
     });
 
     it('should be called on failure', function(done) {
-      Promise.reject(new Error()).finally(function() {
-        assert.equal(arguments.length, 0, 'No arguments to onFinally');
-        done();
-      });
+      Promise.reject(new Error())
+        .finally(function() {
+          assert.equal(arguments.length, 0, 'No arguments to onFinally');
+          done();
+        })
+        .catch();
     });
 
     it('should not affect the result', function(done) {
@@ -342,9 +344,9 @@ describe('Promise', function() {
       );
     });
     it('throws on a number', function() {
-      return Promise.all().then(
+      return Promise.all(20).then(
         function() {
-          assert.fail(20);
+          assert.fail();
         },
         function(error) {
           assert.ok(error instanceof Error);
@@ -368,6 +370,132 @@ describe('Promise', function() {
         },
         function(error) {
           assert.ok(error instanceof Error);
+        }
+      );
+    });
+    it('throws on multiple promises', function() {
+      return Promise.all([Promise.resolve(), Promise.resolve()]).then(
+        function() {
+          assert.ok(true);
+        },
+        function() {
+          assert.fail();
+        }
+      );
+    });
+  });
+  describe('Promise.race', function() {
+    it('throws on implicit undefined', function() {
+      return Promise.race().then(
+        function() {
+          assert.fail();
+        },
+        function(error) {
+          assert.ok(error instanceof Error);
+        }
+      );
+    });
+    it('throws on explicit undefined', function() {
+      return Promise.race(undefined).then(
+        function() {
+          assert.fail();
+        },
+        function(error) {
+          assert.ok(error instanceof Error);
+        }
+      );
+    });
+    it('throws on null', function() {
+      return Promise.race(null).then(
+        function() {
+          assert.fail();
+        },
+        function(error) {
+          assert.ok(error instanceof Error);
+        }
+      );
+    });
+    it('throws on 0', function() {
+      return Promise.race(0).then(
+        function() {
+          assert.fail();
+        },
+        function(error) {
+          assert.ok(error instanceof Error);
+        }
+      );
+    });
+    it('throws on false', function() {
+      return Promise.race(false).then(
+        function() {
+          assert.fail();
+        },
+        function(error) {
+          assert.ok(error instanceof Error);
+        }
+      );
+    });
+    it('throws on a number', function() {
+      return Promise.race(20).then(
+        function() {
+          assert.fail();
+        },
+        function(error) {
+          assert.ok(error instanceof Error);
+        }
+      );
+    });
+    it('throws on a boolean', function() {
+      return Promise.race(true).then(
+        function() {
+          assert.fail();
+        },
+        function(error) {
+          assert.ok(error instanceof Error);
+        }
+      );
+    });
+    it('throws on an object', function() {
+      return Promise.race({ test: 'object' }).then(
+        function() {
+          assert.fail();
+        },
+        function(error) {
+          assert.ok(error instanceof Error);
+        }
+      );
+    });
+    it('throws on multiple promises', function() {
+      return Promise.race(Promise.resolve(), Promise.resolve()).then(
+        function() {
+          assert.fail();
+        },
+        function(error) {
+          assert.ok(error instanceof Error);
+        }
+      );
+    });
+    it('works on basic values', function() {
+      return Promise.race([1, 2, 3]).then(
+        function(val) {
+          assert.ok(val == 1);
+        },
+        function() {
+          assert.fail();
+        }
+      );
+    });
+    it('works on success promise', function() {
+      var doneProm = Promise.resolve(10);
+      var pendingProm1 = new Promise(function() {});
+      var pendingProm2 = new Promise(function() {});
+
+      return Promise.race([pendingProm1, doneProm, pendingProm2]).then(
+        function(val) {
+          assert.ok(val == 10);
+        },
+        function() {
+          assert.fail();
         }
       );
     });

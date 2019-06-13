@@ -38,16 +38,17 @@
   },
   "homepage": "https://github.com/taylorhakes/promise-polyfill",
   "devDependencies": {
+    "browserify": "^16.2.3",
     "cross-env": "^5.1.1",
     "eslint": "^4.11.0",
     "google-closure-compiler": "^20180610.0.1",
     "husky": "^0.14.3",
-    "karma": "^0.13.19",
-    "karma-browserify": "^4.4.2",
+    "karma": "^4.1.0",
+    "karma-browserify": "^6.0.0",
     "karma-chrome-launcher": "^0.2.2",
     "karma-mocha": "^0.2.1",
     "lint-staged": "^5.0.0",
-    "mocha": "^2.3.4",
+    "mocha": "^6.1.4",
     "npm-run-all": "^4.1.2",
     "prettier": "^1.8.2",
     "promises-aplus-tests": "*",
@@ -55,7 +56,8 @@
     "rollup": "^0.52.0",
     "rollup-plugin-uglify": "^2.0.1",
     "sinon": "^1.17.2",
-    "typescript": "^2.9.2"
+    "typescript": "^3.5.1",
+    "watchify": "^3.11.1"
   },
   "keywords": [
     "promise",
