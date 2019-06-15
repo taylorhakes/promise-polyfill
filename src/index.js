@@ -5,7 +5,7 @@ import promiseFinally from './finally';
 var setTimeoutFunc = setTimeout;
 
 function isArray(x) {
-  return Boolean(x && x.length);
+  return Boolean(x && typeof x.length !== 'undefined');
 }
 
 function noop() {}

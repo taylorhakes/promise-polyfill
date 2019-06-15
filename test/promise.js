@@ -373,10 +373,20 @@ describe('Promise', function() {
         }
       );
     });
-    it('throws on multiple promises', function() {
+    it('works on multiple resolved promises', function() {
       return Promise.all([Promise.resolve(), Promise.resolve()]).then(
         function() {
           assert.ok(true);
+        },
+        function() {
+          assert.fail();
+        }
+      );
+    });
+    it('works on empty array', function() {
+      return Promise.all([]).then(
+        function(arr) {
+          assert.ok(arr.length === 0);
         },
         function() {
           assert.fail();
@@ -498,6 +508,10 @@ describe('Promise', function() {
           assert.fail();
         }
       );
+    });
+    it('works on empty array', function() {
+      var prom = Promise.race([]);
+      return assert(prom instanceof Promise);
     });
   });
 });
