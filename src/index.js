@@ -234,6 +234,10 @@ Promise.race = function(arr) {
 // Use polyfill for setImmediate for performance gains
 Promise._immediateFn =
   // @ts-ignore
+  (typeof queueMicrotask == 'function' &&
+    function(fn) {
+      queueMicrotask(fn);
+    }) ||
   (typeof setImmediate === 'function' &&
     function(fn) {
       // @ts-ignore
