@@ -4,5 +4,5 @@ node_js:
 dist: xenial
 services:
   - xvfb
-before_script:
- - export CHROME_BIN=chromium-browser
+addons:
+  chrome: stable
