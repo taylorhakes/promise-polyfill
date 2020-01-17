@@ -1,5 +1,6 @@
 import Promise from './index';
 import promiseFinally from './finally';
+import allSettled from './allSettled';
 
 /** @suppress {undefinedVars} */
 var globalNS = (function() {
@@ -22,4 +23,6 @@ if (!('Promise' in globalNS)) {
   globalNS['Promise'] = Promise;
 } else if (!globalNS.Promise.prototype['finally']) {
   globalNS.Promise.prototype['finally'] = promiseFinally;
+} else if (!globalNS.Promise.allSettled) {
+  globalNS.Promise.allSettled = allSettled;
 }
