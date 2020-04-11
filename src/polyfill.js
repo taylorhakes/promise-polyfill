@@ -18,7 +18,11 @@ var globalNS = (function() {
   throw new Error('unable to locate global object');
 })();
 
-if (!('Promise' in globalNS)) {
+// Expose the polyfill if Promise is undefined or set to a
+// non-function value. The latter can be due to a named HTMLElement
+// being exposed by browsers for legacy reasons.
+// https://github.com/taylorhakes/promise-polyfill/issues/114
+if (typeof globalNS['Promise'] !== 'function') {
   globalNS['Promise'] = Promise;
 } else if (!globalNS.Promise.prototype['finally']) {
   globalNS.Promise.prototype['finally'] = promiseFinally;

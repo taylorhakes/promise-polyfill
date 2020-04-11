@@ -292,7 +292,7 @@ var globalNS = (function() {
   throw new Error('unable to locate global object');
 })();
 
-if (!('Promise' in globalNS)) {
+if (typeof globalNS['Promise'] !== 'function') {
   globalNS['Promise'] = Promise;
 } else if (!globalNS.Promise.prototype['finally']) {
   globalNS.Promise.prototype['finally'] = finallyConstructor;
