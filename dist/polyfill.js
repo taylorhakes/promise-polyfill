@@ -26,9 +26,11 @@ function finallyConstructor(callback) {
   );
 }
 
+var hasGlobal = typeof global !== "undefined";
+var hasWindow = typeof window !== "undefined";
 // Store setTimeout reference so promise-polyfill will be unaffected by
 // other code modifying setTimeout (like sinon.useFakeTimers())
-var setTimeoutFunc = setTimeout;
+var setTimeoutFunc = (hasGlobal ? global : hasWindow ? window : self).setTimeout;
 
 function isArray(x) {
   return Boolean(x && typeof x.length !== 'undefined');
@@ -292,6 +294,10 @@ var globalNS = (function() {
   throw new Error('unable to locate global object');
 })();
 
+// Expose the polyfill if Promise is undefined or set to a
+// non-function value. The latter can be due to a named HTMLElement
+// being exposed by browsers for legacy reasons.
+// https://github.com/taylorhakes/promise-polyfill/issues/114
 if (typeof globalNS['Promise'] !== 'function') {
   globalNS['Promise'] = Promise;
 } else if (!globalNS.Promise.prototype['finally']) {

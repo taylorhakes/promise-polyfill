@@ -1,8 +1,10 @@
 import promiseFinally from './finally';
 
+var hasGlobal = typeof global !== 'undefined';
+var hasWindow = typeof window !== 'undefined';
 // Store setTimeout reference so promise-polyfill will be unaffected by
 // other code modifying setTimeout (like sinon.useFakeTimers())
-var setTimeoutFunc = setTimeout;
+var setTimeoutFunc = (hasGlobal ? global : hasWindow ? window : self).setTimeout;
 
 function isArray(x) {
   return Boolean(x && typeof x.length !== 'undefined');
