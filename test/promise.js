@@ -179,14 +179,20 @@ describe('Promise', function() {
     it('subclassed Promise resolves to subclass', function() {
       var prom = new SubClass(function(resolve) {
         resolve();
-      }).then(function() {}, function() {});
+      }).then(
+        function() {},
+        function() {}
+      );
       assert(spy.calledTwice);
       assert(prom instanceof SubClass);
     });
     it('subclassed Promise rejects to subclass', function() {
       var prom = new SubClass(function(_, reject) {
         reject();
-      }).then(function() {}, function() {});
+      }).then(
+        function() {},
+        function() {}
+      );
       assert(spy.calledTwice);
       assert(prom instanceof SubClass);
     });
@@ -394,6 +400,122 @@ describe('Promise', function() {
       );
     });
   });
+
+  describe('Promise.allSettled', function() {
+    it('throws on implicit undefined', function() {
+      return Promise.allSettled().then(
+        function() {
+          assert.fail();
+        },
+        function(error) {
+          assert.ok(error instanceof Error);
+        }
+      );
+    });
+    it('throws on explicit undefined', function() {
+      return Promise.allSettled(undefined).then(
+        function() {
+          assert.fail();
+        },
+        function(error) {
+          assert.ok(error instanceof Error);
+        }
+      );
+    });
+    it('throws on null', function() {
+      return Promise.allSettled(null).then(
+        function() {
+          assert.fail();
+        },
+        function(error) {
+          assert.ok(error instanceof Error);
+        }
+      );
+    });
+    it('throws on 0', function() {
+      return Promise.allSettled(0).then(
+        function() {
+          assert.fail();
+        },
+        function(error) {
+          assert.ok(error instanceof Error);
+        }
+      );
+    });
+    it('throws on false', function() {
+      return Promise.allSettled(false).then(
+        function() {
+          assert.fail();
+        },
+        function(error) {
+          assert.ok(error instanceof Error);
+        }
+      );
+    });
+    it('throws on a number', function() {
+      return Promise.allSettled(20).then(
+        function() {
+          assert.fail();
+        },
+        function(error) {
+          assert.ok(error instanceof Error);
+        }
+      );
+    });
+    it('throws on a boolean', function() {
+      return Promise.allSettled(true).then(
+        function() {
+          assert.fail();
+        },
+        function(error) {
+          assert.ok(error instanceof Error);
+        }
+      );
+    });
+    it('throws on an object', function() {
+      return Promise.allSettled({ test: 'object' }).then(
+        function() {
+          assert.fail();
+        },
+        function(error) {
+          assert.ok(error instanceof Error);
+        }
+      );
+    });
+    it('works on multiple resolved promises', function() {
+      return Promise.allSettled([Promise.resolve(), Promise.resolve()]).then(
+        function() {
+          assert.ok(true);
+        },
+        function() {
+          assert.fail();
+        }
+      );
+    });
+    it('works even with rejected promises', function() {
+      return Promise.allSettled([Promise.reject(), Promise.resolve()]).then(
+        function(results) {
+          assert.equal(results[0].status, 'rejected');
+          assert.equal(results[1].status, 'fulfilled');
+          assert.ok(true);
+        },
+        function() {
+          assert.fail();
+        }
+      );
+    });
+    it('works on empty array', function() {
+      return Promise.allSettled([]).then(
+        function(arr) {
+          assert.ok(arr.length === 0);
+        },
+        function() {
+          assert.fail();
+        }
+      );
+    });
+  });
+
   describe('Promise.race', function() {
     it('throws on implicit undefined', function() {
       return Promise.race().then(
