@@ -45,7 +45,7 @@ This will set a global Promise object if the browser doesn't already have `windo
 
 ## Simple use
 
-If you would like to add a global Promise object (Node or Browser) if native Promise doesn't exist (polyfill Promise). Use the method below. This is useful it you are building a website and want to support older browsers.
+If you would like to add a global Promise object (Node or Browser) if native Promise doesn't exist (polyfill Promise). Use the method below. This is useful if you are building a website and want to support older browsers.
 Javascript library authors should _NOT_ use this method.
 
 ```js
