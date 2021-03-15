@@ -1,6 +1,7 @@
 import promiseFinally from './finally';
 
-
+// to satisfy closure compiler, declare global
+var global;
 var hasGlobal = typeof global !== 'undefined';
 var hasWindow = typeof window !== 'undefined';
 // Store setTimeout reference so promise-polyfill will be unaffected by
