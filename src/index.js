@@ -4,6 +4,7 @@ import allSettled from './allSettled';
 // Store setTimeout reference so promise-polyfill will be unaffected by
 // other code modifying setTimeout (like sinon.useFakeTimers())
 var setTimeoutFunc = setTimeout;
+var setImmediateFunc = typeof setImmediate !== 'undefined' ? setImmediate : null;
 
 function isArray(x) {
   return Boolean(x && typeof x.length !== 'undefined');
@@ -237,10 +238,10 @@ Promise.race = function(arr) {
 // Use polyfill for setImmediate for performance gains
 Promise._immediateFn =
   // @ts-ignore
-  (typeof setImmediate === 'function' &&
+  (typeof setImmediateFunc === 'function' &&
     function(fn) {
       // @ts-ignore
-      setImmediate(fn);
+      setImmediateFunc(fn);
     }) ||
   function(fn) {
     setTimeoutFunc(fn, 0);
