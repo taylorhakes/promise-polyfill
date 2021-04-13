@@ -52,6 +52,12 @@ Javascript library authors should _NOT_ use this method.
 import 'promise-polyfill/src/polyfill';
 ```
 
+If using Typescript, you'll need to do
+
+```js
+import "promise-polyfill"
+```
+
 If you would like to not affect the global environment (sometimes known as a [ponyfill](https://github.com/sindresorhus/ponyfill), you can import the base module. This is nice for library authors or people working in environment where you don't want
 to affect the global environment.
 
