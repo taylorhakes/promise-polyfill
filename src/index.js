@@ -252,6 +252,12 @@ Promise._unhandledRejectionFn = function _unhandledRejectionFn(err) {
   if (typeof console !== 'undefined' && console) {
     console.warn('Possible Unhandled Promise Rejection:', err); // eslint-disable-line no-console
   }
+  if (typeof window !== 'undefined' && window && typeof window.dispatchEvent === "function") {
+    const evt = new CustomEvent("unhandledrejection");
+    evt.reason = err;
+    evt.promise = this;
+    window.dispatchEvent(evt);
+  }
 };
 
 export default Promise;
