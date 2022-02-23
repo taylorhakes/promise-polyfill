@@ -242,7 +242,7 @@ Promise._immediateFn =
   (typeof setImmediateFunc === 'function' &&
     function(fn) {
       // @ts-ignore
-      setImmediateFunc(fn);
+      setImmediateFunc.call(window, fn);
     }) ||
   function(fn) {
     setTimeoutFunc(fn, 0);
