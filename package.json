@@ -18,6 +18,7 @@
     "typescript": "tsc --checkJS --allowJS --noEmit src/index.js",
     "lint": "eslint src && npm run closure && npm run typescript",
     "test": "npm run lint && mocha && karma start --single-run",
+    "ci-test": "npm run lint && mocha",
     "prebuild": "rimraf lib dist",
     "build": "run-p build:**",
     "build:cjs": "rollup -i src/index.js -o lib/index.js -f cjs",
