@@ -348,10 +348,13 @@ var globalNS = (function() {
 // https://github.com/taylorhakes/promise-polyfill/issues/114
 if (typeof globalNS['Promise'] !== 'function') {
   globalNS['Promise'] = Promise;
-} else if (!globalNS.Promise.prototype['finally']) {
-  globalNS.Promise.prototype['finally'] = finallyConstructor;
-} else if (!globalNS.Promise.allSettled) {
-  globalNS.Promise.allSettled = allSettled;
+} else {
+  if (!globalNS.Promise.prototype['finally']) {
+    globalNS.Promise.prototype['finally'] = finallyConstructor;
+  } 
+  if (!globalNS.Promise.allSettled) {
+    globalNS.Promise.allSettled = allSettled;
+  }
 }
 
 })));
