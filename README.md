@@ -1,10 +1,5 @@
 # Promise Polyfill
 
-[![travis][travis-image]][travis-url]
-
-[travis-image]: https://img.shields.io/travis/taylorhakes/promise-polyfill.svg?style=flat
-[travis-url]: https://travis-ci.org/taylorhakes/promise-polyfill
-
 Lightweight ES6 Promise polyfill for the browser and node. Adheres closely to
 the spec. It is a perfect polyfill IE or any other browser that does
 not support native promises.
