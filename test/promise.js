@@ -179,20 +179,14 @@ describe('Promise', function() {
     it('subclassed Promise resolves to subclass', function() {
       var prom = new SubClass(function(resolve) {
         resolve();
-      }).then(
-        function() {},
-        function() {}
-      );
+      }).then(function() {}, function() {});
       assert(spy.calledTwice);
       assert(prom instanceof SubClass);
     });
     it('subclassed Promise rejects to subclass', function() {
       var prom = new SubClass(function(_, reject) {
         reject();
-      }).then(
-        function() {},
-        function() {}
-      );
+      }).then(function() {}, function() {});
       assert(spy.calledTwice);
       assert(prom instanceof SubClass);
     });
@@ -281,7 +275,7 @@ describe('Promise', function() {
       .Promise;
 
     // Skip tests if Native Promise doesn't exist
-    if (!NativePromise) {
+    if (!NativePromise || NativePromise.prototype.finally) {
       return;
     }
 
