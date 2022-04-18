@@ -1,6 +1,7 @@
 import Promise from './index';
 import promiseFinally from './finally';
 import allSettled from './allSettled';
+import bind from './bind';
 
 /** @suppress {undefinedVars} */
 var globalNS = (function() {
@@ -30,6 +31,6 @@ if (typeof globalNS['Promise'] !== 'function') {
     globalNS.Promise.prototype['finally'] = promiseFinally;
   } 
   if (!globalNS.Promise.allSettled) {
-    globalNS.Promise.allSettled = allSettled;
+    globalNS.Promise.allSettled = bind(allSettled, Promise);
   }
 }

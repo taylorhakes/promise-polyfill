@@ -1,5 +1,6 @@
 import promiseFinally from './finally';
 import allSettled from './allSettled';
+import bind from './bind';
 
 // Store setTimeout reference so promise-polyfill will be unaffected by
 // other code modifying setTimeout (like sinon.useFakeTimers())
@@ -10,13 +11,6 @@ function isArray(x) {
 }
 
 function noop() {}
-
-// Polyfill for Function.prototype.bind
-function bind(fn, thisArg) {
-  return function() {
-    fn.apply(thisArg, arguments);
-  };
-}
 
 /**
  * @constructor
@@ -204,7 +198,7 @@ Promise.all = function(arr) {
   });
 };
 
-Promise.allSettled = allSettled;
+Promise.allSettled = bind(allSettled, Promise);
 
 Promise.resolve = function(value) {
   if (value && typeof value === 'object' && value.constructor === Promise) {
