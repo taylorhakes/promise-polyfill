@@ -74,6 +74,15 @@ function allSettled(arr) {
   });
 }
 
+/**
+ * @constructor
+ */
+function AggregateError(errors, message) {
+  this.name = 'AggregateError', this.errors = errors;
+  this.message = message || '';
+}
+AggregateError.prototype = Error.prototype;
+
 // Store setTimeout reference so promise-polyfill will be unaffected by
 // other code modifying setTimeout (like sinon.useFakeTimers())
 var setTimeoutFunc = setTimeout;
@@ -273,6 +282,33 @@ Promise.all = function(arr) {
 
     for (var i = 0; i < args.length; i++) {
       res(i, args[i]);
+    }
+  });
+};
+
+Promise.any = function(arr) {
+  return new Promise(function(resolve, reject) {
+    if (!isArray(arr)) {
+      return reject(new TypeError('Promise.any accepts an array'));
+    }
+
+    var args = Array.prototype.slice.call(arr);
+    if (args.length === 0) return reject();
+
+    var rejectionReasons = [];
+    for (var i = 0; i < args.length; i++) {
+      try {
+        Promise.resolve(args[i])
+          .then(resolve)
+          .catch(function(error) {
+            rejectionReasons.push(error);
+            if (rejectionReasons.length === args.length) {
+              reject(new AggregateError(rejectionReasons, 'All promises were rejected'));
+            }
+          });
+      } catch (ex) {
+        reject(ex);
+      }
     }
   });
 };
