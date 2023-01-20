@@ -1,5 +1,6 @@
 import promiseFinally from './finally';
 import allSettled from './allSettled';
+import any from './any';
 
 // Store setTimeout reference so promise-polyfill will be unaffected by
 // other code modifying setTimeout (like sinon.useFakeTimers())
@@ -203,6 +204,8 @@ Promise.all = function(arr) {
     }
   });
 };
+
+Promise.any = any;
 
 Promise.allSettled = allSettled;
 

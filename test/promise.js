@@ -395,6 +395,149 @@ describe('Promise', function() {
     });
   });
 
+  describe('Promise.any', function() {
+    it('throws on implicit undefined', function() {
+      return Promise.any().then(
+        function() {
+          assert.fail();
+        },
+        function(error) {
+          assert.ok(error instanceof Error);
+        }
+      );
+    });
+    it('throws on explicit undefined', function() {
+      return Promise.all(undefined).then(
+        function() {
+          assert.fail();
+        },
+        function(error) {
+          assert.ok(error instanceof Error);
+        }
+      );
+    });
+    it('throws on null', function() {
+      return Promise.all(null).then(
+        function() {
+          assert.fail();
+        },
+        function(error) {
+          assert.ok(error instanceof Error);
+        }
+      );
+    });
+    it('works on array with a single resolved promise', function() {
+      return Promise.any([Promise.resolve()]).then(
+        function() {
+          assert.ok(true);
+        },
+        function() {
+          assert.fail();
+        }
+      );
+    });
+    it('works on array with multiple resolved promises', function() {
+      return Promise.any([
+        Promise.resolve('first'),
+        Promise.resolve('second')
+      ]).then(
+        function(value) {
+          assert.equal(value, 'first');
+        },
+        function() {
+          assert.fail();
+        }
+      );
+    });
+    it('works on array with at least one resolved promise', function() {
+      return Promise.any([
+        Promise.reject(),
+        Promise.resolve('second'),
+        Promise.reject(),
+        Promise.resolve('fourth')
+      ]).then(
+        function(value) {
+          assert.equal(value, 'second');
+        },
+        function() {
+          assert.fail();
+        }
+      );
+    });
+    it('works on array with a single rejected promise', function() {
+      return Promise.any([Promise.reject('error')]).then(
+        function() {
+          assert.fail();
+        },
+        function(aggregateError) {
+          assert.ok(aggregateError instanceof Error);
+          assert.equal(aggregateError.name, 'AggregateError');
+          assert.equal(aggregateError.errors.length, 1);
+          assert.equal(aggregateError.errors[0], 'error');
+        }
+      );
+    });
+    it('works on array with multiple rejected promises', function() {
+      return Promise.any([
+        Promise.reject('first'),
+        Promise.reject('second')
+      ]).then(
+        function() {
+          assert.fail();
+        },
+        function(aggregateError) {
+          assert.ok(aggregateError instanceof Error);
+          assert.equal(aggregateError.name, 'AggregateError');
+          assert.equal(aggregateError.errors.length, 2);
+          assert.equal(aggregateError.errors[0], 'first');
+          assert.equal(aggregateError.errors[1], 'second');
+        }
+      );
+    });
+    it('works on array without promises', function() {
+      return Promise.any([1, 'value', {}]).then(
+        function(value) {
+          assert.equal(value, 1);
+        },
+        function() {
+          assert.fail();
+        }
+      );
+    });
+    it('works on array with asynchronously resolved promises', function(done) {
+      Promise.any([
+        new Promise(function(resolve) {
+          setTimeout(function() {
+            return resolve('first (slow)');
+          }, 100);
+        }),
+        new Promise(function(resolve) {
+          setTimeout(function() {
+            return resolve('second (fast)');
+          }, 50);
+        })
+      ]).then(
+        function(value) {
+          assert.equal(value, 'second (fast)');
+          done();
+        },
+        function() {
+          assert.fail();
+        }
+      );
+    });
+    it('works on empty array', function() {
+      return Promise.any([]).then(
+        function() {
+          assert.fail();
+        },
+        function() {
+          assert.ok(true);
+        }
+      );
+    });
+  });
+
   describe('Promise.allSettled', function() {
     it('throws on implicit undefined', function() {
       return Promise.allSettled().then(
