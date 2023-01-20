@@ -395,7 +395,7 @@ if (typeof globalNS['Promise'] !== 'function') {
 } else {
   if (!globalNS.Promise.prototype['finally']) {
     globalNS.Promise.prototype['finally'] = finallyConstructor;
-  } 
+  }
   if (!globalNS.Promise.allSettled) {
     globalNS.Promise.allSettled = allSettled;
   }

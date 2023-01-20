@@ -1,5 +1,11 @@
 # Changelog
+
+# 8.3.0
+
+* Add Promise.any
+
 ### 8.2.0
+
 * Added Promise.allSettled
 
 ### 8.1.0

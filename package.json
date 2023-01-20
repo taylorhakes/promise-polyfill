@@ -1,6 +1,6 @@
 {
   "name": "promise-polyfill",
-  "version": "8.2.3",
+  "version": "8.3.0",
   "description": "Lightweight promise polyfill. A+ compliant",
   "main": "lib/index.js",
   "module": "src/index.js",
