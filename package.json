@@ -57,7 +57,7 @@
     "rollup": "^0.52.0",
     "rollup-plugin-uglify": "^2.0.1",
     "sinon": "^1.17.2",
-    "watchify": "^3.11.1",
+    "watchify": "^4.0.0",
     "typescript": "^4.6.2"
   },
   "keywords": [
