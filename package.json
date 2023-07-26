@@ -41,7 +41,7 @@
   "devDependencies": {
     "browserify": "^16.2.3",
     "cross-env": "^5.1.1",
-    "eslint": "^4.11.0",
+    "eslint": "^8.39.0",
     "google-closure-compiler": "^20180610.0.1",
     "husky": "^0.14.3",
     "karma": "^6.3.16",
